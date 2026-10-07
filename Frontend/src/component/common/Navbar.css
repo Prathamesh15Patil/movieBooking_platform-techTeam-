@@ -1,0 +1,186 @@
+/* Navbar Component Styles */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #020617;
+  /* slate-950 */
+  padding: 1rem 1.5rem;
+  color: #ffffff;
+  border-bottom: 1px solid #1e293b;
+  /* slate-800 */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+/* Logo Styles */
+.navbar-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-logo:hover {
+  color: #fbf698;
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+/* Centered Search Bar Wrapper */
+.navbar-search-wrapper {
+  flex: 1;
+  max-width: 28rem;
+  /* max-w-md */
+  margin-left: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Navigation Links Container */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Individual Navigation Link */
+.navbar-link {
+  color: #e2e8f0;
+  /* slate-200 */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-link:hover {
+  color: #fbbf24;
+  /* amber-400 */
+}
+
+/* ================================
+   NAVBAR RIGHT SIDE
+================================ */
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+
+/* ================================
+   LOCATION
+================================ */
+
+.city-selector {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 10px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #e5e7eb;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.city-selector:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.city-location-icon {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+}
+
+.city-chevron {
+  width: 14px;
+  height: 14px;
+
+  margin-left: 2px;
+
+  transition: transform 0.2s ease;
+}
+
+.city-selector:hover .city-chevron {
+  transform: translateY(2px);
+}
+
+
+.signin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+  height: 38px;
+
+  padding: 0 18px;
+
+  border: 1px solid #64748b;
+  border-radius: 7px;
+
+  background: #1e293b00;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.signin-button:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+  .navbar-right {
+    gap: 8px;
+  }
+
+  .city-selector span {
+    display: none;
+  }
+
+  .city-selector {
+    padding: 8px;
+  }
+
+  .signin-button {
+    min-width: 70px;
+    padding: 0 12px;
+  }
+}
