@@ -56,7 +56,6 @@
 
 .city-modal-overlay {
     position: fixed;
-
     inset: 0;
 
     z-index: 9999;
@@ -67,9 +66,13 @@
 
     padding-top: 88px;
 
-    background: rgba(0, 0, 0, 0.589);
+    /* Slight black tint */
 
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.55);
+
+    /* Blur everything behind the overlay */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 
     animation: cityOverlayIn 0.2s ease;
 }
@@ -80,7 +83,9 @@
 ================================ */
 
 .city-modal {
-    width: min(1200px, calc(100vw - 40px));
+    position: relative;
+
+    width: min(900px);
 
     background: #ffffff;
 
@@ -96,6 +101,42 @@
     animation: cityModalIn 0.25s ease;
 }
 
+.city-modal-close {
+    position: absolute;
+    top: 48px;
+    right: 20px;
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: transparent;
+
+    color: #555;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.city-modal-close:hover {
+    background: #f3f4f6;
+    color: #111;
+}
+
+.city-modal-close svg {
+    width: 22px;
+    height: 22px;
+}
+
 
 /* ================================
    SEARCH
@@ -105,7 +146,7 @@
     display: flex;
     align-items: center;
 
-    margin: 20px;
+    margin: 20px 70px 20px 20px;
 
     height: 56px;
 
@@ -180,7 +221,7 @@
 
     background: transparent;
 
-    color: #e7354a;
+    color: #e9162e;
 
     font-size: 16px;
 
@@ -378,6 +419,13 @@
         overflow-y: auto;
     }
 
+    .city-modal-close {
+        top: 36px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+    }
+
     .city-grid {
         grid-template-columns: repeat(3, 1fr);
 
@@ -385,6 +433,6 @@
     }
 
     .city-search-box {
-        margin: 12px;
+        margin: 12px 52px 12px 12px;
     }
 }

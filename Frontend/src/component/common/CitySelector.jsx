@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import "./CitySelector.css";
 
 const popularCities = [
@@ -155,116 +156,139 @@ const CitySelector = () => {
             </button>
 
             {/* City popup */}
-            {isOpen && (
-                <div
-                    className="city-modal-overlay"
-                    onMouseDown={(e) => {
-                        if (e.target === e.currentTarget) {
-                            setIsOpen(false);
-                        }
-                    }}
-                >
-                    <div className="city-modal">
-
-                        {/* Search */}
-                        <div className="city-search-box">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
+            {isOpen &&
+                createPortal(
+                    <div
+                        className="city-modal-overlay"
+                        onMouseDown={(e) => {
+                            if (e.target === e.currentTarget) {
+                                setIsOpen(false);
+                            }
+                        }}
+                    >
+                        <div className="city-modal">
+                            {/* Close button */}
+                            <button
+                                type="button"
+                                className="city-modal-close"
+                                onClick={() => setIsOpen(false)}
+                                aria-label="Close city selector"
                             >
-                                <circle cx="11" cy="11" r="7" />
-                                <path d="m20 20-4-4" />
-                            </svg>
-
-                            <input
-                                autoFocus
-                                type="text"
-                                value={search}
-                                onChange={(e) =>
-                                    setSearch(e.target.value)
-                                }
-                                placeholder="Search for your city"
-                            />
-
-                            {search && (
-                                <button
-                                    type="button"
-                                    onClick={() => setSearch("")}
-                                    className="city-search-clear"
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
                                 >
-                                    ×
-                                </button>
-                            )}
-                        </div>
+                                    <path d="M18 6 6 18M6 6l12 12" />
+                                </svg>
+                            </button>
 
-                        {/* Detect location */}
-                        <button
-                            className="detect-location"
-                            onClick={handleDetectLocation}
-                            disabled={detecting}
-                            type="button"
-                        >
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                            >
-                                <circle cx="12" cy="12" r="3" />
-                                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-                            </svg>
+                            {/* Search */}
+                            <div className="city-search-box">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                >
+                                    <circle cx="11" cy="11" r="7" />
+                                    <path d="m20 20-4-4" />
+                                </svg>
 
-                            {detecting
-                                ? "Detecting location..."
-                                : "Detect my location"}
-                        </button>
+                                <input
+                                    autoFocus
+                                    type="text"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search for your city"
+                                />
 
-                        <div className="city-divider" />
-
-                        {/* Popular cities */}
-                        <h3>Popular Cities</h3>
-
-                        <div className="city-grid">
-                            {filteredCities.length > 0 ? (
-                                filteredCities.map((city, index) => (
+                                {search && (
                                     <button
-                                        key={city}
-                                        className={`city-item ${selectedCity === city
-                                            ? "selected"
-                                            : ""
-                                            }`}
-                                        onClick={() =>
-                                            selectCity(city)
-                                        }
                                         type="button"
+                                        onClick={() => setSearch("")}
+                                        className="city-search-clear"
                                     >
-                                        <div className="city-icon">
-                                            {["🏙️", "🏛️", "🏰", "🕌", "🏢"][index % 5]}
-                                        </div>
-
-                                        <span>{city}</span>
+                                        ×
                                     </button>
-                                ))
-                            ) : (
-                                <div className="no-city">
-                                    No cities found
-                                </div>
-                            )}
+                                )}
+                            </div>
+
+                            {/* Detect location */}
+                            <button
+                                className="detect-location"
+                                onClick={handleDetectLocation}
+                                disabled={detecting}
+                                type="button"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.7"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="12" cy="12" r="7" />
+                                    <circle cx="12" cy="12" r="2.5" />
+                                    <path d="M12 2v3" />
+                                    <path d="M12 19v3" />
+                                    <path d="M2 12h3" />
+                                    <path d="M19 12h3" />
+                                </svg>
+
+                                {detecting
+                                    ? "Detecting location..."
+                                    : "Detect my location"}
+                            </button>
+
+                            <div className="city-divider" />
+
+                            <h3>Popular Cities</h3>
+
+                            <div className="city-grid">
+                                {filteredCities.length > 0 ? (
+                                    filteredCities.map((city, index) => (
+                                        <button
+                                            key={city}
+                                            className={`city-item ${selectedCity === city
+                                                ? "selected"
+                                                : ""
+                                                }`}
+                                            onClick={() => selectCity(city)}
+                                            type="button"
+                                        >
+                                            <div className="city-icon">
+                                                {["🏙️", "🏛️", "🏰", "🕌", "🏢"][
+                                                    index % 5
+                                                ]}
+                                            </div>
+
+                                            <span>{city}</span>
+                                        </button>
+                                    ))
+                                ) : (
+                                    <div className="no-city">
+                                        No cities found
+                                    </div>
+                                )}
+                            </div>
+
+                            <button
+                                className="view-all-cities"
+                                type="button"
+                                onClick={() => setSearch("")}
+                            >
+                                View All Cities
+                            </button>
+
                         </div>
-
-                        <button
-                            className="view-all-cities"
-                            type="button"
-                            onClick={() => setSearch("")}
-                        >
-                            View All Cities
-                        </button>
-
-                    </div>
-                </div>
-            )}
+                    </div>,
+                    document.body
+                )
+            }
         </>
     );
 };
