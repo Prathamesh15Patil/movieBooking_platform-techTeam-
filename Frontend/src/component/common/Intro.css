@@ -2,13 +2,54 @@
     position: fixed;
     inset: 0;
 
+    width: 100%;
+    height: 100vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #000;
+    background: #05010d;
+
+    overflow: hidden;
 
     z-index: 9999;
+}
+
+/* Aurora fills the entire intro */
+.intro-aurora {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+}
+
+/* Dark layer above Aurora */
+.intro-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+/* Text stays above everything */
+.intro-content {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
 }
 
 .intro h1 {
@@ -16,16 +57,24 @@
 
     margin: 0;
 
-    color: #fff;
+    color: white;
 
     font-family: Arial, sans-serif;
-    font-size: clamp(4rem, 12vw, 12rem);
+
+    font-size: clamp(3.5rem, 10vw, 10rem);
+
     font-weight: 600;
 
     letter-spacing: -0.07em;
+
+    text-shadow:
+        0 0 30px rgba(255, 255, 255, 0.15);
 }
 
 .letter {
     display: inline-block;
+
     opacity: 0;
+
+    will-change: transform, opacity, filter;
 }
