@@ -6,6 +6,99 @@
     margin: 0 auto;
 }
 
+.ad-banner-carousel {
+    position: relative;
+    min-width: 0;
+    min-height: 260px;
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+.ad-banner-track {
+    display: flex;
+    height: 100%;
+    will-change: transform;
+}
+
+.ad-banner-track.is-sliding {
+    transition: transform 600ms ease-in-out;
+}
+
+.ad-carousel-arrow,
+.ad-carousel-dot {
+    position: absolute;
+    z-index: 3;
+    border: 0;
+    cursor: pointer;
+}
+
+.ad-carousel-arrow {
+    top: 50%;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+   
+    color: #fff;
+    font-size: 40px;
+    line-height: 32px;
+    transform: translateY(-50%);
+    transition: background 180ms ease, transform 180ms ease;
+}
+
+/* .ad-carousel-arrow:hover,
+.ad-carousel-arrow:focus-visible {
+    background: rgba(15, 23, 42, 0.95);
+    outline: 1px solid #ffffff;
+    outline-offset: 2px;
+} */
+
+.ad-carousel-arrow:hover {
+    transform: translateY(-50%) scale(1.08);
+}
+
+.ad-carousel-arrow-left {
+    left: 16px;
+}
+
+.ad-carousel-arrow-right {
+    right: 16px;
+}
+
+.ad-carousel-dots {
+    position: absolute;
+    z-index: 3;
+    bottom: 16px;
+    left: 50%;
+    display: flex;
+    gap: 8px;
+    transform: translateX(-50%);
+}
+
+.ad-carousel-dot {
+    position: static;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    transition: background 180ms ease, transform 180ms ease;
+}
+
+.ad-carousel-dot:hover,
+.ad-carousel-dot:focus-visible,
+.ad-carousel-dot.is-active {
+    background: #fffffe;
+}
+
+.ad-carousel-dot:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.ad-carousel-dot.is-active {
+    transform: scale(1.25);
+}
+
 .ad-banner {
     position: relative;
     display: block;
@@ -15,6 +108,10 @@
     background: #111827;
     color: #fff;
     isolation: isolate;
+}
+
+.ad-banner-wide {
+    flex: 0 0 100%;
 }
 
 .ad-banner-wide img,
@@ -115,7 +212,31 @@
     }
 
     .ad-banner,
-    .ad-banner-video {
+    .ad-banner-video,
+    .ad-banner-carousel {
         min-height: 210px;
+    }
+
+    .ad-carousel-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 25px;
+        line-height: 28px;
+    }
+
+    .ad-carousel-arrow-left {
+        left: 12px;
+    }
+
+    .ad-carousel-arrow-right {
+        right: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ad-banner-track.is-sliding,
+    .ad-banner-wide img,
+    .ad-banner-video video {
+        transition: none;
     }
 }
