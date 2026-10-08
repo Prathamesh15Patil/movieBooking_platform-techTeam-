@@ -2,16 +2,14 @@ import React from "react";
 import "./Home.css";
 
 import CtfAd from "../component/Home/Ad_Discount/Ctfad";
+import TrendingMovies from "../component/Home/TrendingMovies/TrendingMovies";
 
 const Home = () => {
     return (
         <main className="home-page">
 
             <CtfAd />
-
-            <section id="movies" className="home-content">
-                <h2>Welcome to PopcornPass</h2>
-            </section>
+            <TrendingMovies />
 
         </main>
     );
