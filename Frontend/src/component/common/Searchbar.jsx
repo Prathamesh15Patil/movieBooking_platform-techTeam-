@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./Searchbar.css";
 import BorderGlow from "./Borderglow";
 
-const Searchbar = ({ onSearch, placeholder = "Search movies..." }) => {
+const Searchbar = ({ onSearch, placeholder = "Search for movies..." }) => {
     const [query, setQuery] = useState("");
 
     const handleChange = (e) => {
@@ -27,7 +27,7 @@ const Searchbar = ({ onSearch, placeholder = "Search movies..." }) => {
         <div className="searchbar-container">
             <BorderGlow
                 backgroundColor="#0f172a"
-                borderRadius={999}
+                borderRadius={10}
                 glowRadius={25}
                 coneSpread={25}
                 colors={[

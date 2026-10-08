@@ -1,0 +1,189 @@
+/* ================================
+   HOME PAGE
+================================ */
+
+.home-page {
+    position: relative;
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    padding: 40px;
+}
+
+
+/* ================================
+   DISCOUNT TICKET
+================================ */
+
+.home-discount-ticket {
+    position: absolute;
+
+    top: 30px;
+    right: 30px;
+
+    z-index: 10;
+
+    width: 460px;
+
+    transform-origin: top right;
+}
+
+
+/* ================================
+   TICKET CONTENT
+================================ */
+
+.discount-ticket-content {
+    position: absolute;
+
+    left: 20px;
+    top: 20px;
+
+    color: #ffffff;
+}
+
+.discount-label {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #fbbf24;
+}
+
+.discount-ticket-content h2 {
+    margin: 0;
+
+    font-size: 32px;
+
+    line-height: 1.05;
+
+    font-weight: 700;
+}
+
+.discount-ticket-content p {
+    margin-top: 14px;
+
+    font-size: 13px;
+
+    color: #d4d4d8;
+}
+
+
+/* ================================
+   STUB CONTENT
+================================ */
+
+.discount-ticket-stub {
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 15px;
+}
+
+.discount-small {
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+
+    color: #a1a1aa;
+}
+
+.discount-ticket-stub h3 {
+    margin: 6px 0;
+
+    font-size: 28px;
+
+    color: #fbbf24;
+}
+
+.discount-ticket-stub p {
+    margin: 0;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    color: #d4d4d8;
+}
+
+.discount-code {
+    margin-top: 12px;
+
+    padding: 5px 8px;
+
+    border: 1px dashed #71717a;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    color: #ffffff;
+}
+
+
+/* ================================
+   HOME CONTENT
+================================ */
+
+.home-content {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+
+    .home-discount-ticket {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        margin-left: auto;
+        margin-bottom: 40px;
+
+        max-width: 460px;
+    }
+
+    .home-page {
+        padding: 25px;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .home-page {
+        padding: 20px;
+    }
+
+    .home-discount-ticket {
+        width: 100%;
+    }
+}
