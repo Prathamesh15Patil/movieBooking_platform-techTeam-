@@ -25,6 +25,8 @@ const promotions = [
     },
 ];
 
+const TRAILER_LOOP_SECONDS = 40;
+
 const CtfAd = () => {
     const [activeSlide, setActiveSlide] = useState(0);
     const [isSliding, setIsSliding] = useState(true);
@@ -34,10 +36,31 @@ const CtfAd = () => {
 
         const timer = window.setInterval(() => {
             setIsSliding(true);
-            setActiveSlide((currentSlide) => currentSlide + 1);
+            setActiveSlide((currentSlide) => {
+                if (currentSlide >= promotions.length) {
+                    setIsSliding(false);
+                    return 0;
+                }
+
+                return currentSlide + 1;
+            });
         }, 5000);
 
         return () => window.clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        const recoverCarousel = () => {
+            if (document.hidden) return;
+
+            setIsSliding(false);
+            setActiveSlide((currentSlide) => (
+                currentSlide >= promotions.length ? 0 : currentSlide
+            ));
+        };
+
+        document.addEventListener("visibilitychange", recoverCarousel);
+        return () => document.removeEventListener("visibilitychange", recoverCarousel);
     }, []);
 
     const resetAfterLastSlide = (event) => {
@@ -131,8 +154,21 @@ const CtfAd = () => {
             </div>
 
             <div className="ad-banner ad-banner-video">
-                <video autoPlay muted loop playsInline poster="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=800&q=80">
-                    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=800&q=80"
+                    onTimeUpdate={(event) => {
+                        const video = event.currentTarget;
+                        if (video.currentTime >= TRAILER_LOOP_SECONDS) {
+                            video.currentTime = 0;
+                            video.play();
+                        }
+                    }}
+                >
+                    <source src="Doraemon_Movie.mp4" type="video/mp4" />
                 </video>
                 <div className="ad-video-shade" />
                 <div className="ad-video-copy">
