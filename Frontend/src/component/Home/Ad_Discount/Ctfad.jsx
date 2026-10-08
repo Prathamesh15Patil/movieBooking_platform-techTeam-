@@ -136,7 +136,7 @@ const CtfAd = () => {
                 </video>
                 <div className="ad-video-shade" />
                 <div className="ad-video-copy">
-                    <span>NOW SHOWING</span>
+                    <span>TRENDING</span>
                     <strong>Watch the<br />trailer</strong>
                 </div>
             </div>
