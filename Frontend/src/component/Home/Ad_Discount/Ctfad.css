@@ -1,0 +1,121 @@
+.ad-discount {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(220px, 1fr);
+    gap: 10px;
+    width: min(1440px, 100%);
+    margin: 0 auto;
+}
+
+.ad-banner {
+    position: relative;
+    display: block;
+    min-height: 260px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #111827;
+    color: #fff;
+    isolation: isolate;
+}
+
+.ad-banner-wide img,
+.ad-banner-video video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 350ms ease;
+}
+
+.ad-banner:hover img,
+.ad-banner:hover video {
+    transform: scale(1.04);
+}
+
+.ad-banner-shade,
+.ad-video-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        90deg,
+        rgba(3, 7, 18, 0.86),
+        rgba(3, 7, 18, 0.2) 70%
+    );
+}
+
+.ad-banner-copy,
+.ad-video-copy,
+.ad-banner-cta,
+.ad-play {
+    position: absolute;
+    z-index: 2;
+}
+
+.ad-banner-copy {
+    top: 50%;
+    left: clamp(22px, 4vw, 56px);
+    transform: translateY(-50%);
+}
+
+.ad-banner-copy span,
+.ad-video-copy span {
+    color: #fbbf24;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.ad-banner-copy h1 {
+    margin: 10px 0 8px;
+    font-size: clamp(25px, 3vw, 46px);
+    line-height: 1.04;
+}
+
+.ad-banner-copy p {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+
+.ad-banner-cta {
+    right: 24px;
+    bottom: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ad-banner-video {
+    min-height: 260px;
+}
+
+.ad-video-shade {
+    background: linear-gradient(
+        180deg,
+        rgba(3, 7, 18, 0.14),
+        rgba(3, 7, 18, 0.82)
+    );
+}
+
+.ad-video-copy {
+    left: 22px;
+    bottom: 22px;
+}
+
+.ad-video-copy strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 25px;
+    line-height: 1.05;
+}
+
+@media (max-width: 720px) {
+    .ad-discount {
+        grid-template-columns: 1fr;
+    }
+
+    .ad-banner,
+    .ad-banner-video {
+        min-height: 210px;
+    }
+}

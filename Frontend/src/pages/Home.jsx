@@ -1,12 +1,20 @@
-import React from 'react'
+import React from "react";
+import "./Home.css";
+
+import CtfAd from "../component/Home/Ad_Discount/Ctfad";
 
 const Home = () => {
     return (
-        <div>
-            Home Page
-            <h1 className="text-amber-500 text-5xl">Welcome to PopcornPass</h1>
-        </div>
-    )
-}
+        <main className="home-page">
 
-export default Home
+            <CtfAd />
+
+            <section id="movies" className="home-content">
+                <h2>Welcome to PopcornPass</h2>
+            </section>
+
+        </main>
+    );
+};
+
+export default Home;
