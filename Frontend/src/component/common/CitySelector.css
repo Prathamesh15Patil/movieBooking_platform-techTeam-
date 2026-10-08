@@ -64,14 +64,13 @@
     align-items: flex-start;
     justify-content: center;
 
-    padding-top: 88px;
+    padding-top: 60px;
 
-    /* Slight black tint */
-
+    /* Black tint over the entire screen */
     background: rgba(0, 0, 0, 0.55);
 
-    /* Blur everything behind the overlay */
-    backdrop-filter: blur(8px);
+    /* Blur everything behind the modal */
+    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(8px);
 
     animation: cityOverlayIn 0.2s ease;
@@ -82,10 +81,20 @@
    MODAL
 ================================ */
 
+/* ================================
+   MODAL
+================================ */
+
 .city-modal {
     position: relative;
 
-    width: min(900px);
+    width: min(920px, 94vw);
+    max-height: 39rem;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
 
     background: #ffffff;
 
@@ -96,15 +105,20 @@
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.35);
 
-    overflow: hidden;
-
     animation: cityModalIn 0.25s ease;
 }
 
+
+/* ================================
+   CLOSE BUTTON
+================================ */
+
 .city-modal-close {
     position: absolute;
-    top: 48px;
+
+    top: 40px;
     right: 20px;
+
     transform: translateY(-50%);
 
     width: 40px;
@@ -123,7 +137,11 @@
 
     cursor: pointer;
 
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
     z-index: 10;
 }
 
@@ -146,15 +164,15 @@
     display: flex;
     align-items: center;
 
-    margin: 20px 70px 20px 20px;
+    margin: 18px 70px 14px 20px;
 
-    height: 56px;
+    height: 52px;
 
     border: 1px solid #ddd;
 
     border-radius: 6px;
 
-    padding: 0 16px;
+    padding: 10px 16px;
 
     background: white;
 }
@@ -215,7 +233,7 @@
 
     width: 100%;
 
-    padding: 0 22px 18px;
+    padding: 0 22px 14px;
 
     border: none;
 
@@ -223,11 +241,12 @@
 
     color: #e9162e;
 
-    font-size: 16px;
+    font-size: 15px;
 
     cursor: pointer;
 
     text-align: left;
+    border-bottom: 1px dashed #e5e5e5;
 }
 
 .detect-location svg {
@@ -263,25 +282,27 @@
 ================================ */
 
 .city-modal h3 {
-    margin: 18px 0 20px;
+    margin: 14px 0 12px;
 
     text-align: center;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 500;
 
     color: #444;
+
+    
 }
 
 .city-grid {
     display: grid;
 
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(6, 1fr);
 
-    gap: 10px;
+    gap: 6px 8px;
 
-    padding: 0 35px;
+    padding: 0 24px;
 }
 
 .city-item {
@@ -293,19 +314,21 @@
 
     justify-content: center;
 
-    gap: 8px;
+    gap: 4px;
 
-    min-height: 100px;
+    min-height: 108px;
 
     border: none;
 
     background: transparent;
 
-    color: #666;
+    color: #555;
 
     cursor: pointer;
 
     border-radius: 8px;
+
+    padding: 6px 2px;
 
     transition:
         background 0.2s ease,
@@ -316,7 +339,7 @@
 .city-item:hover {
     background: #f7f7f7;
 
-    color: #222;
+    color: #111;
 
     transform: translateY(-2px);
 }
@@ -331,27 +354,170 @@
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    width: 58px;
-    height: 58px;
+    width: 72px;
+    height: 72px;
+}
 
-    font-size: 34px;
+.city-icon img {
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+
+    transition: transform 0.2s ease;
+}
+
+.city-item:hover .city-icon img {
+    transform: scale(1.08);
 }
 
 .city-item span {
-    font-size: 14px;
+    font-size: 13px;
+
+    font-weight: 500;
 }
 
 
 /* ================================
-   VIEW ALL
+   OTHER CITIES
+================================ */
+
+.other-cities-section {
+    margin-top: 14px;
+
+    padding-top: 6px;
+
+    border-top: 1px dashed #e5e5e5;
+}
+
+.other-cities-title {
+    margin: 12px 0 10px;
+
+    text-align: center;
+
+    font-size: 17px;
+
+    font-weight: 500;
+
+    color: #444;
+}
+
+.other-cities-grid {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 6px 12px;
+
+    padding: 0 28px 10px;
+
+    max-height: 18dvh; 
+    overflow-y: auto;
+
+    overflow-x: hidden;
+}
+
+
+/* ================================
+   OTHER CITIES SCROLLBAR
+================================ */
+
+.other-cities-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.other-cities-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+
+    border-radius: 4px;
+}
+
+.other-cities-grid::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+
+    border-radius: 4px;
+}
+
+.other-cities-grid::-webkit-scrollbar-thumb:hover {
+    background: #e7354a;
+}
+
+
+/* Firefox */
+
+.other-cities-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f1f1f1;
+}
+
+
+.other-city-item {
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    padding: 4px 6px;
+
+    border-radius: 4px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    transition:
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+.other-city-item:hover {
+    color: #e7354a;
+
+    background: #fff1f3;
+}
+
+.other-city-item.selected {
+    color: #e7354a;
+
+    font-weight: 600;
+}
+
+
+/* ================================
+   NO CITY
+================================ */
+
+.no-city {
+    text-align: center;
+
+    padding: 24px;
+
+    color: #888;
+
+    font-size: 15px;
+}
+
+
+/* ================================
+   VIEW ALL / HIDE ALL
 ================================ */
 
 .view-all-cities {
     display: block;
 
-    margin: 18px auto 22px;
+    margin: 14px auto 20px;
 
     border: none;
 
@@ -359,12 +525,18 @@
 
     color: #e7354a;
 
-    font-size: 16px;
+    font-size: 15px;
+
+    font-weight: 500;
 
     cursor: pointer;
+
+    transition: color 0.2s ease;
 }
 
 .view-all-cities:hover {
+    color: #c91f36;
+
     text-decoration: underline;
 }
 
@@ -386,12 +558,16 @@
 @keyframes cityModalIn {
     from {
         opacity: 0;
-        transform: translateY(-15px) scale(0.98);
+
+        transform:
+            translateY(-15px) scale(0.98);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+
+        transform:
+            translateY(0) scale(1);
     }
 }
 
@@ -401,38 +577,351 @@
 ================================ */
 
 @media (max-width: 1000px) {
+
     .city-grid {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .other-cities-grid {
+        grid-template-columns: repeat(4, 1fr);
+
+        max-height: 230px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .city-modal-overlay {
+        padding-top: 20px;
+    }
+
+
+    /*
+       Modal itself still does NOT scroll.
+    */
+
+    .city-modal {
+        width: calc(100vw - 20px);
+
+        max-height: none;
+
+        overflow: hidden;
+    }
+
+
+    .city-modal-close {
+        top: 36px;
+
+        right: 14px;
+
+        width: 36px;
+        height: 36px;
+    }
+
+
+    .city-grid {
+        grid-template-columns: repeat(3, 1fr);
+
+        padding: 0 12px;
+    }
+
+
+    /*
+       Only Other Cities scrolls on mobile.
+    */
+
+    .other-cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+
+        padding: 0 12px 14px;
+
+        max-height: 200px;
+
+        overflow-y: auto;
+    }
+
+
+    .city-search-box {
+        margin: 12px 52px 12px 12px;
+    }
+}
+
+/* ================================
+   POLISHED LAYOUT OVERRIDES
+================================ */
+
+.city-selector {
+    min-height: 40px;
+    white-space: nowrap;
+}
+
+.city-selector:focus-visible,
+.city-modal button:focus-visible,
+.city-search-box:focus-within {
+    outline: 3px solid rgba(231, 53, 74, 0.32);
+    outline-offset: 2px;
+}
+
+.city-modal-overlay {
+    align-items: center;
+    padding: 24px;
+    background: rgba(9, 12, 20, 0.64);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.city-modal {
+    width: min(920px, 100%);
+    max-height: min(760px, calc(100vh - 48px));
+    max-height: min(760px, calc(100dvh - 48px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 18px;
+    color: #1f2937;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.city-modal-close {
+    top: 24px;
+    right: 20px;
+    transform: none;
+    color: #64748b;
+}
+
+.city-modal-close:hover {
+    background: #f1f5f9;
+    color: #111827;
+}
+
+.city-search-box {
+    height: 52px;
+    margin: 20px 72px 14px 24px;
+    border-color: #dbe1e8;
+    border-radius: 10px;
+    background: #f8fafc;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.city-search-box:focus-within {
+    border-color: #e7354a;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(231, 53, 74, 0.1);
+    outline: none;
+}
+
+.city-search-box input {
+    min-width: 0;
+}
+
+.detect-location {
+    min-height: 42px;
+    padding: 0 24px 14px;
+    color: #dc354b;
+    font-weight: 600;
+}
+
+.city-divider {
+    background: #edf0f3;
+}
+
+.city-modal h3 {
+    margin: 18px 0 12px;
+    color: #334155;
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.city-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    padding: 0 20px;
+}
+
+.city-item {
+    min-width: 0;
+    min-height: 112px;
+    padding: 8px 4px;
+    color: #475569;
+}
+
+.city-item:hover,
+.city-item.selected {
+    background: #fff1f3;
+    color: #d92d46;
+}
+
+.city-icon {
+    width: 68px;
+    height: 68px;
+}
+
+.city-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.city-item span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.other-cities-section {
+    margin: 14px 20px 0;
+    padding-top: 2px;
+    border-top: 1px solid #edf0f3;
+}
+
+.other-cities-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px 10px;
+    max-height: min(240px, 32vh);
+    max-height: min(240px, 32dvh);
+    padding: 0 4px 12px;
+}
+
+.other-city-item {
+    min-height: 32px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    color: #475569;
+}
+
+.other-city-item:hover,
+.other-city-item.selected {
+    background: #fff1f3;
+    color: #d92d46;
+}
+
+.no-city {
+    color: #64748b;
+}
+
+.view-all-cities {
+    margin: 14px auto 18px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.view-all-cities:hover {
+    background: #fff1f3;
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+    .city-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .other-cities-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 600px) {
     .city-modal-overlay {
-        padding-top: 20px;
+        align-items: center;
+        padding: 12px;
     }
 
     .city-modal {
-        width: calc(100vw - 20px);
-
-        max-height: calc(100vh - 40px);
-
-        overflow-y: auto;
+        width: 100%;
+        max-height: calc(100vh - 24px);
+        max-height: calc(100dvh - 24px);
+        border-radius: 14px;
     }
 
     .city-modal-close {
-        top: 36px;
-        right: 14px;
+        top: 18px;
+        right: 12px;
         width: 36px;
         height: 36px;
     }
 
-    .city-grid {
-        grid-template-columns: repeat(3, 1fr);
-
-        padding: 0 15px;
+    .city-search-box {
+        margin: 12px 58px 12px 12px;
+        padding: 8px 10px;
     }
 
+    .city-search-box input {
+        padding: 0 8px;
+        font-size: 15px;
+    }
+
+    .detect-location {
+        padding: 0 16px 12px;
+    }
+
+    .city-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        padding: 0 10px;
+    }
+
+    .city-item {
+        min-height: 100px;
+    }
+
+    .city-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .other-cities-section {
+        margin-right: 12px;
+        margin-left: 12px;
+    }
+
+    .other-cities-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-height: min(220px, 30vh);
+        max-height: min(220px, 30dvh);
+        padding: 0 2px 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .city-selector,
+    .city-chevron,
+    .city-modal,
+    .city-item,
+    .city-icon img,
     .city-search-box {
-        margin: 12px 52px 12px 12px;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Keep the expanded city list compact, with the action outside its scrollbar. */
+.city-modal {
+    overflow: hidden;
+}
+
+.other-cities-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.other-cities-grid {
+    height: min(165px, 20dvh);
+    max-height: 165px;
+    overflow-y: auto;
+}
+
+.hide-all-cities {
+    flex: 0 0 auto;
+    margin: 10px auto 2px;
+}
+
+@media (max-width: 600px) {
+    .other-cities-grid {
+        height: min(150px, 20dvh);
+        max-height: 150px;
     }
 }
