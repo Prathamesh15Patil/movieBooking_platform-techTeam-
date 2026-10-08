@@ -63,8 +63,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="h-12 w-full rounded-xl text-sm font-semibold text-white shadow-lg shadow-[#7c4dff]/30 transition hover:-translate-y-px hover:brightness-110 active:translate-y-0 active:scale-[.98]"
-            style={{ backgroundImage: grad }}
+            className="h-12 w-full rounded-xl bg-[#7c4dff] text-sm font-semibold text-white shadow-lg shadow-[#7c4dff]/30 transition hover:-translate-y-px hover:bg-[#6b38ff] active:translate-y-0 active:scale-[.98]"
           >
             Sign In
           </button>
