@@ -23,34 +23,46 @@ const offers = [
     },
 ];
 
+
 const Offers = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [phase, setPhase] = useState("enter");
-    const timers = useRef([]);
+    const [timerKey, setTimerKey] = useState(0);
 
+    // Automatic slide animation — restarts whenever timerKey changes
     useEffect(() => {
         const interval = setInterval(() => {
             setPhase("exit");
 
-            const exitTimer = setTimeout(() => {
+            setTimeout(() => {
                 setActiveIndex((current) => (current + 1) % offers.length);
                 setPhase("enter");
 
-                const resetTimer = setTimeout(() => {
+                setTimeout(() => {
                     setPhase("idle");
                 }, 750);
-
-                timers.current.push(resetTimer);
             }, 650);
-
-            timers.current.push(exitTimer);
         }, 4500);
 
-        return () => {
-            clearInterval(interval);
-            timers.current.forEach(clearTimeout);
-        };
-    }, []);
+        return () => clearInterval(interval);
+    }, [timerKey]);
+
+    // Arrow click: animate the transition and restart the timer
+    const handleNext = () => {
+        setPhase("exit");
+
+        setTimeout(() => {
+            setActiveIndex((current) => (current + 1) % offers.length);
+            setPhase("enter");
+
+            setTimeout(() => {
+                setPhase("idle");
+            }, 750);
+        }, 650);
+
+        // Restart the 4.5-second automatic cycle
+        setTimerKey((current) => current + 1);
+    };
 
     const offer = offers[activeIndex];
 
@@ -80,25 +92,19 @@ const Offers = () => {
                     <span className="pp-offers-label">
                         {offer.eyebrow}
                     </span>
-
                     <h3>{offer.title}</h3>
-
                     <p>{offer.description}</p>
 
                     <NavLink to="/movies" className="pp-offers-button">
                         {offer.button}
-
                     </NavLink>
-
                 </div>
+
                 <button
                     type="button"
                     className="pp-offers-next"
                     aria-label="Show next offer"
-                    onClick={() => {
-                        setActiveIndex((current) => (current + 1) % offers.length);
-                        setPhase("enter");
-                    }}
+                    onClick={handleNext}
                 >
                     &gt;
                 </button>
