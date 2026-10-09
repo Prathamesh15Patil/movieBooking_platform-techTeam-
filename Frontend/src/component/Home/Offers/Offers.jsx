@@ -24,10 +24,31 @@ const offers = [
 ];
 
 
-const Offers = () => {
+const Offers = ({ showIntro = false }) => {
+    const sectionRef = useRef(null);
+    const [isInView, setIsInView] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const [phase, setPhase] = useState("enter");
     const [timerKey, setTimerKey] = useState(0);
+
+    useEffect(() => {
+        if (showIntro) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [showIntro]);
 
     // Automatic slide animation — restarts whenever timerKey changes
     useEffect(() => {
@@ -67,7 +88,7 @@ const Offers = () => {
     const offer = offers[activeIndex];
 
     return (
-        <section id="offers" className="pp-offers">
+        <section ref={sectionRef} id="offers" className={`pp-offers${isInView ? " in-view" : ""}`}>
             <div className="pp-offers-heading">
                 <span className="pp-offers-eyebrow">MORE THAN A MOVIE</span>
                 <h2>

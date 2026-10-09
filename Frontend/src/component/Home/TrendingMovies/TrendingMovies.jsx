@@ -56,8 +56,29 @@ const trendingMovies = [
 
 const IMAGE_INTERVAL = 2500;
 
-const TrendingMovies = () => {
+const TrendingMovies = ({ showIntro = false }) => {
     const listRef = useRef(null);
+    const sectionRef = useRef(null);
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        if (showIntro) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [showIntro]);
 
     // Movie currently being hovered or focused
     const [hoveredMovie, setHoveredMovie] = useState(null);
@@ -133,8 +154,9 @@ const TrendingMovies = () => {
 
     return (
         <section
+            ref={sectionRef}
             id="movies"
-            className="trending-movies"
+            className={`trending-movies${isInView ? " in-view" : ""}`}
             aria-labelledby="trending-movies-title"
         >
             <div className="trending-movies-heading">

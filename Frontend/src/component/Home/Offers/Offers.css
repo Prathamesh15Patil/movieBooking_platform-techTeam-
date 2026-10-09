@@ -1,10 +1,29 @@
-/* Main section */
 .pp-offers {
     width: 100%;
     padding: 60px 5% 70px;
     overflow: hidden;
     background: #c8b7b700;
     box-sizing: border-box;
+}
+
+.pp-offers .pp-offers-heading,
+.pp-offers .pp-offers-visual {
+    opacity: 0;
+    transform: translateX(-120px);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pp-offers .pp-offers-content {
+    opacity: 0;
+    transform: translateX(120px);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pp-offers.in-view .pp-offers-heading,
+.pp-offers.in-view .pp-offers-visual,
+.pp-offers.in-view .pp-offers-content {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* Heading */

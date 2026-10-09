@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Ctfad.css";
 
 const promotions = [
@@ -27,9 +27,30 @@ const promotions = [
 
 const TRAILER_LOOP_SECONDS = 40;
 
-const CtfAd = () => {
+const CtfAd = ({ showIntro = false }) => {
+    const sectionRef = useRef(null);
+    const [isInView, setIsInView] = useState(false);
     const [activeSlide, setActiveSlide] = useState(0);
     const [isSliding, setIsSliding] = useState(true);
+
+    useEffect(() => {
+        if (showIntro) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [showIntro]);
 
     useEffect(() => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -97,7 +118,7 @@ const CtfAd = () => {
     };
 
     return (
-        <section className="ad-discount" aria-label="Featured promotions">
+        <section ref={sectionRef} className={`ad-discount${isInView ? " in-view" : ""}`} aria-label="Featured promotions">
             <div className="ad-banner-carousel">
                 <div
                     className={`ad-banner-track${isSliding ? " is-sliding" : ""}`}

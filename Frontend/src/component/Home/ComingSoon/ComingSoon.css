@@ -3,6 +3,25 @@
     margin: 45px auto 0;
     padding-bottom: 20px;
     box-sizing: border-box;
+    overflow: hidden;
+}
+
+.coming-soon .coming-soon-heading {
+    opacity: 0;
+    transform: translateX(-120px);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.coming-soon .coming-soon-list {
+    opacity: 0;
+    transform: translateX(120px);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.coming-soon.in-view .coming-soon-heading,
+.coming-soon.in-view .coming-soon-list {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .coming-soon-heading {

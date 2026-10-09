@@ -9,15 +9,15 @@ import ComingSoon from "../component/Home/ComingSoon/ComingSoon";
 // import Footer from "../component/common/Footer";
 
 
-const Home = () => {
+const Home = ({ showIntro = false }) => {
     return (
         <main className="home-page">
 
             <Navigation />
-            <CtfAd />
-            <TrendingMovies />
-            <Offers />
-            <ComingSoon />
+            <CtfAd showIntro={showIntro} />
+            <TrendingMovies showIntro={showIntro} />
+            <Offers showIntro={showIntro} />
+            <ComingSoon showIntro={showIntro} />
             {/* <Footer /> */}
 
 

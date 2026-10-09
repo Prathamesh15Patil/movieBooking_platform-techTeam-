@@ -37,8 +37,29 @@ const comingSoonMovies = [
 
 const IMAGE_INTERVAL = 2500;
 
-const ComingSoon = () => {
+const ComingSoon = ({ showIntro = false }) => {
     const listRef = useRef(null);
+    const sectionRef = useRef(null);
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        if (showIntro) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [showIntro]);
 
     const [showArrows, setShowArrows] = useState(false);
 
@@ -125,8 +146,9 @@ const ComingSoon = () => {
 
     return (
         <section
+            ref={sectionRef}
             id="coming-soon"
-            className="coming-soon"
+            className={`coming-soon${isInView ? " in-view" : ""}`}
             aria-labelledby="coming-soon-title"
         >
             <div className="coming-soon-heading">
