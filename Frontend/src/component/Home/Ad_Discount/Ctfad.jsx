@@ -193,9 +193,9 @@ const CtfAd = ({ showIntro = false }) => {
                         style={{ transform: `translateX(-${activeSlide * 100}%)` }}
                     >
                         {[...promotions, promotions[0]].map((promotion, index) => (
-                            <a
+                            <Link
                                 className="ad-banner ad-banner-wide"
-                                href="#movies"
+                                to="/thank-you"
                                 key={`${promotion.eyebrow}-${index}`}
                                 aria-hidden={index !== activeSlide}
                                 tabIndex={index === activeSlide ? 0 : -1}
@@ -208,7 +208,7 @@ const CtfAd = ({ showIntro = false }) => {
                                     <p>{promotion.description}</p>
                                 </div>
                                 <span className="ad-banner-cta">{promotion.cta}</span>
-                            </a>
+                            </Link>
                         ))}
                     </div>
                     <button
