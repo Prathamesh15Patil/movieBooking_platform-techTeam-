@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import Navbar from './component/common/Navbar'
 import Intro from "./component/common/Intro";
 
+
 function App() {
   const location = useLocation();
 
