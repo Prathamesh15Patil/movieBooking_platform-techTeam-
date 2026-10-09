@@ -10,6 +10,8 @@ import Booking from './pages/Booking'
 import Profile from './pages/Profile'
 import Navbar from './component/common/Navbar'
 import Intro from "./component/common/Intro";
+import Footer from "./component/common/Footer";
+
 
 
 function App() {
@@ -45,6 +47,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
+      <Footer />
     </>
   )
 }

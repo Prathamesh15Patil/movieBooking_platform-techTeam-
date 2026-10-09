@@ -14,8 +14,10 @@
 .trending-movies h2 {
     margin: 0;
     color: #0f172a;
-    font-size: clamp(24px, 2.2vw, 30px);
+    font-size: clamp(24px, 4.2vw, 50px);
     font-weight: 700;
+    font-family: 'Margesh', sans-serif;
+
 }
 
 .trending-movies-controls {
@@ -41,7 +43,7 @@
 
 .trending-movies-controls button:hover,
 .trending-movies-controls button:focus-visible {
-    
+
     background: #170544;
     outline: none;
     transform: scale(1.06);
@@ -129,7 +131,7 @@
     font-weight: 700;
 }
 
-.trending-movie-rating > span:first-child {
+.trending-movie-rating>span:first-child {
     color: #f43f5e;
     font-size: 19px;
     line-height: 1;

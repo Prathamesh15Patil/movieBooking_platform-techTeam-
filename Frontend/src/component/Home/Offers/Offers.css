@@ -15,17 +15,20 @@
 
 .pp-offers-eyebrow {
     color: #f43f5e;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 2px;
+    font-family: 'REVERIE', sans-serif;
+
 }
 
 .pp-offers-heading h2 {
     margin: 10px 0;
     color: #18181b;
-    font-size: clamp(25px, 3vw, 36px);
+    font-family: 'Enchanted Hermion Script', sans-serif;
+    font-size: clamp(28px, 3.5vw, 62px);
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
 }
 
 .pp-offers-heading h2 span {
@@ -97,6 +100,7 @@
     max-width: 470px;
     margin: 14px 0;
     color: #18181b;
+    font-family: 'Enchanted Hermion Serif', sans-serif;
     font-size: clamp(27px, 3.3vw, 42px);
     line-height: 1.15;
     letter-spacing: -1.2px;

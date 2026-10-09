@@ -11,21 +11,26 @@
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 16px;
+
+    font-size: clamp(24px, 2.2vw, 30px);
 }
 
 .coming-soon-eyebrow {
     display: block;
-    margin-bottom: 6px;
+
     color: #f43f5e;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 800;
     letter-spacing: 2px;
+    font-family: 'REVERIE', sans-serif;
+
 }
 
 .coming-soon h2 {
     margin: 0;
     color: #0f172a;
-    font-size: clamp(24px, 2.2vw, 30px);
+    font-family: 'Sansita One', sans-serif;
+    font-size: clamp(28px, 3.8vw, 48px);
     font-weight: 700;
 }
 

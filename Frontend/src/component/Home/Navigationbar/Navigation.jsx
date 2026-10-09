@@ -1,19 +1,21 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Navigation.css";
 
 const Navigation = () => {
     const [isVisible, setIsVisible] = useState(true);
     const lastScrollY = useRef(0);
     const scrollTimeout = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const navItems = [
-        { name: "Home", path: "/" },
-        { name: "Movies", path: "/movies" },
-        { name: "Cinemas", path: "/cinemas" },
-        { name: "Offers", path: "/offers" },
-        { name: "Coming Soon", path: "/coming-soon" },
+        { name: "Home", path: "/", targetId: "top" },
+        { name: "Movies", path: "/movies", targetId: "movies" },
+        { name: "Cinemas", path: "/cinemas", targetId: "cinemas" },
+        { name: "Offers", path: "/#offers", targetId: "offers" },
+        { name: "Coming Soon", path: "/#coming-soon", targetId: "coming-soon" },
     ];
 
     useEffect(() => {
@@ -53,20 +55,47 @@ const Navigation = () => {
         };
     }, []);
 
+    // Handle smooth scroll on page load if hash exists
+    useEffect(() => {
+        if (location.pathname === "/" && location.hash) {
+            const id = location.hash.replace("#", "");
+            const element = document.getElementById(id);
+            if (element) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: "smooth" });
+                }, 150);
+            }
+        }
+    }, [location.pathname, location.hash]);
+
+    const handleItemClick = (e, item) => {
+        if (location.pathname === "/") {
+            if (item.targetId === "top") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                window.history.pushState(null, "", "/");
+            } else if (item.targetId) {
+                const el = document.getElementById(item.targetId);
+                if (el) {
+                    e.preventDefault();
+                    el.scrollIntoView({ behavior: "smooth" });
+                    window.history.pushState(null, "", `#${item.targetId}`);
+                }
+            }
+        }
+    };
+
     return (
         <nav
-            className={`pp-navigation ${isVisible ? "nav-visible" : "nav-hidden"
-                }`}
+            className={`pp-navigation ${isVisible ? "nav-visible" : "nav-hidden"}`}
             aria-label="Main navigation"
         >
             {navItems.map((item) => (
                 <NavLink
-                    key={item.path}
+                    key={item.name}
                     to={item.path}
-                    end={item.path === "/"}
-                    className={({ isActive }) =>
-                        `pp-navigation-link${isActive ? " active" : ""}`
-                    }
+                    onClick={(e) => handleItemClick(e, item)}
+                    className="pp-navigation-link"
                 >
                     {item.name}
                 </NavLink>

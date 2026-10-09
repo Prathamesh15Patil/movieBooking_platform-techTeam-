@@ -67,7 +67,7 @@ const Offers = () => {
     const offer = offers[activeIndex];
 
     return (
-        <section className="pp-offers">
+        <section id="offers" className="pp-offers">
             <div className="pp-offers-heading">
                 <span className="pp-offers-eyebrow">MORE THAN A MOVIE</span>
                 <h2>

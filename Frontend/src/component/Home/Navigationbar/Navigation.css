@@ -42,6 +42,8 @@
 
 
 
+
+/* Default link */
 .pp-navigation-link {
     position: relative;
     padding: 10px 0;
@@ -53,35 +55,28 @@
     transition: color 200ms ease;
 }
 
-/* Hover and active link color */
-.pp-navigation-link:hover,
-.pp-navigation-link.active {
+/* Change color only while hovering */
+.pp-navigation-link:hover {
     color: #f43f5e;
 }
 
-/* Animated underline */
+/* Underline animation */
 .pp-navigation-link::after {
     content: "";
     position: absolute;
-    bottom: 8px;
+    bottom: 5px;
     left: 0;
     width: 100%;
     height: 2px;
     border-radius: 2px;
     background: #f43f5e;
-
     transform: scaleX(0);
     transform-origin: center;
     transition: transform 250ms ease;
 }
 
-/* Show underline on hover */
+/* Underline appears only on hover */
 .pp-navigation-link:hover::after {
-    transform: scaleX(1);
-}
-
-/* Keep underline on the active page */
-.pp-navigation-link.active::after {
     transform: scaleX(1);
 }
 
@@ -102,4 +97,18 @@
     .pp-navigation-link {
         font-size: 13px;
     }
+}
+
+/* Keep section headings visible below the navbar */
+
+#movies {
+    scroll-margin-top: 130px;
+}
+
+#coming-soon {
+    scroll-margin-top: 150px;
+}
+
+#offers {
+    scroll-margin-top: 80px;
 }
