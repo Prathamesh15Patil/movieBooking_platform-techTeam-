@@ -156,6 +156,7 @@ const CitySelector = () => {
     const selectCity = (city) => {
         setSelectedCity(city);
         localStorage.setItem("selectedCity", city);
+        window.dispatchEvent(new Event("cityChange"));
         setIsOpen(false);
         setSearch("");
         setShowAllCities(false);

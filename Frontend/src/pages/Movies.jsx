@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navigation from "../component/Home/Navigationbar/Navigation";
 import CtfAd from "../component/Home/Ad_Discount/Ctfad";
@@ -129,6 +129,26 @@ const Movies = () => {
     const [genres, setGenres] = useState([]);
     const [formats, setFormats] = useState([]);
     const [showUpcoming, setShowUpcoming] = useState(false);
+    const [selectedCity, setSelectedCity] = useState(
+        () => localStorage.getItem("selectedCity") || "Belagavi (Belgaum)"
+    );
+
+    useEffect(() => {
+        const handleCityChange = () => {
+            const city = localStorage.getItem("selectedCity");
+            if (city && city !== "Location") {
+                setSelectedCity(city);
+            }
+        };
+
+        window.addEventListener("cityChange", handleCityChange);
+        window.addEventListener("storage", handleCityChange);
+
+        return () => {
+            window.removeEventListener("cityChange", handleCityChange);
+            window.removeEventListener("storage", handleCityChange);
+        };
+    }, []);
 
     const clearFilters = () => {
         setLanguages([]);
@@ -169,17 +189,22 @@ const Movies = () => {
                 />
 
                 <section className="movies-main">
-                    <h1>Movies In Belagavi (Belgaum)</h1>
+                    <h1>Movies In {selectedCity && selectedCity !== "Location" ? selectedCity : "Belagavi (Belgaum)"}</h1>
 
-                    {/* Coming Soon Banner */}
+                    {/* Coming Soon / Now Showing Banner */}
                     <div className="movies-coming-soon-banner">
-                        <h2>Coming Soon</h2>
+                        <h2
+                            onClick={() => setShowUpcoming((prev) => !prev)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            {showUpcoming ? "Now Showing" : "Coming Soon"}
+                        </h2>
                         <button
                             type="button"
                             className="movies-explore-link"
                             onClick={() => setShowUpcoming((prev) => !prev)}
                         >
-                            {showUpcoming ? "View Now Showing Movies ›" : "Explore Upcoming Movies ›"}
+                            {showUpcoming ? "In cinemas near you ›" : "Explore Upcoming Movies ›"}
                         </button>
                     </div>
 
