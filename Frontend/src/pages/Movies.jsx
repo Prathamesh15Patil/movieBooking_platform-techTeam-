@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import Navigation from "../component/Home/Navigationbar/Navigation";
 import CtfAd from "../component/Home/Ad_Discount/Ctfad";
 import Filters from "../component/Movies/Filters/Filters";
 import MovieGrid from "../component/Movies/MovieGrid/MovieGrid";
@@ -76,8 +75,6 @@ const Movies = () => {
 
     return (
         <div className="movies-page-wrapper">
-            <Navigation />
-
             <CtfAd showIntro={false} />
 
             <main className="movies-page">

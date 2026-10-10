@@ -1,0 +1,83 @@
+.cast-crew-section {
+    padding: 55px 7%;
+    background: #080808;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cast-crew-heading {
+    margin: 0 0 35px;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.cast-crew-group {
+    margin-bottom: 38px;
+}
+
+.cast-crew-group h3 {
+    margin: 0 0 20px;
+    color: #bdbdbd;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cast-crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.cast-crew-item {
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.cast-crew-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.cast-crew-item h4 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 650;
+    color: #f1f5f9;
+}
+
+.cast-crew-item p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .cast-crew-section {
+        padding: 40px 5%;
+    }
+
+    .cast-crew-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .cast-crew-item {
+        padding: 12px 14px;
+    }
+
+    .cast-crew-item h4 {
+        font-size: 0.9rem;
+    }
+
+    .cast-crew-item p {
+        font-size: 0.8rem;
+    }
+}

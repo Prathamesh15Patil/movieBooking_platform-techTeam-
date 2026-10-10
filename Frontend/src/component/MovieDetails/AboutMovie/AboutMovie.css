@@ -1,0 +1,119 @@
+.about-movie-section {
+    padding: 55px 7%;
+    background: #080808;
+    color: #fff;
+}
+
+.about-movie-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+    gap: 65px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.about-movie-main h2,
+.about-movie-info h3 {
+    margin: 0 0 25px;
+    color: #fff;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.about-movie-synopsis {
+    margin: 0 0 30px;
+    color: #bdbdbd;
+    font-size: 16px;
+    line-height: 1.9;
+    white-space: pre-line;
+}
+
+.about-movie-cast-crew-block {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.about-movie-cast-crew-block h3 {
+    margin: 0 0 10px;
+    color: #f1f5f9;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.about-movie-cast-crew-text {
+    margin: 0;
+    color: #bdbdbd;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.about-movie-info {
+    padding: 28px;
+    border: 1px solid #292929;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #151515, #0d0d0d);
+}
+
+.about-movie-info h3 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.about-movie-info-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-movie-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid #292929;
+}
+
+.about-movie-info-item:first-child {
+    padding-top: 0;
+}
+
+.about-movie-info-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.about-movie-info-item span {
+    color: #888;
+    font-size: 13px;
+}
+
+.about-movie-info-item strong {
+    color: #f1f1f1;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 850px) {
+    .about-movie-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-movie-section {
+        padding: 40px 5%;
+    }
+
+    .about-movie-info {
+        padding: 22px;
+    }
+
+    .about-movie-synopsis {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+}

@@ -1,6 +1,7 @@
 .movies-page-wrapper {
     min-height: 100vh;
     background: #f1f5f9;
+    padding: 25px;
 }
 
 .movies-page {

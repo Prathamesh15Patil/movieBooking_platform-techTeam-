@@ -1,0 +1,35 @@
+.movie-detail-page {
+    min-height: 100vh;
+    background: #080808;
+    color: #fff;
+}
+
+.movie-not-found {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: #080808;
+    color: #fff;
+    text-align: center;
+}
+
+.movie-not-found h2 {
+    font-size: 2rem;
+}
+
+.movie-not-found button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 7px;
+    background: #fff;
+    color: #080808;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.movie-not-found button:hover {
+    background: #ddd;
+}

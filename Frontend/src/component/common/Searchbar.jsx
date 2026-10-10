@@ -4,11 +4,20 @@ import "./Searchbar.css";
 import BorderGlow from "./Borderglow";
 import { ALL_SYSTEM_MOVIES } from "../../utils/movieData";
 
-const Searchbar = ({ onSearch, placeholder = "Search for movies..." }) => {
+const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChange }) => {
     const [query, setQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
     const navigate = useNavigate();
+
+    const handleFocus = () => {
+        if (onFocusChange) onFocusChange(true);
+        if (query.trim()) setIsOpen(true);
+    };
+
+    const handleBlur = () => {
+        if (onFocusChange) onFocusChange(false);
+    };
 
     const filteredMovies = query.trim()
         ? ALL_SYSTEM_MOVIES.filter((movie) => {
@@ -42,15 +51,18 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies..." }) => {
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && query.trim()) {
             setIsOpen(false);
+            if (onFocusChange) onFocusChange(false);
             navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
         } else if (e.key === "Escape") {
             setIsOpen(false);
+            if (onFocusChange) onFocusChange(false);
         }
     };
 
     const handleSelectMovie = (movieId) => {
         setIsOpen(false);
         setQuery("");
+        if (onFocusChange) onFocusChange(false);
         navigate(`/movie/${movieId}`);
     };
 
@@ -59,12 +71,13 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies..." }) => {
         const handleClickOutside = (e) => {
             if (containerRef.current && !containerRef.current.contains(e.target)) {
                 setIsOpen(false);
+                if (onFocusChange) onFocusChange(false);
             }
         };
 
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    }, [onFocusChange]);
 
     return (
         <div className="searchbar-container" ref={containerRef}>
@@ -98,7 +111,8 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies..." }) => {
                         type="text"
                         value={query}
                         onChange={handleChange}
-                        onFocus={() => query.trim() && setIsOpen(true)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         onKeyDown={handleKeyDown}
                         placeholder={placeholder}
                     />
