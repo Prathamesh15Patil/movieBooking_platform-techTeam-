@@ -1,0 +1,131 @@
+.movies-page-wrapper {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+.movies-page {
+    display: grid;
+    grid-template-columns: 375px minmax(0, 1fr);
+    gap: 38px;
+
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 32px;
+    box-sizing: border-box;
+
+    align-items: start;
+    color: #292929;
+}
+
+.movies-main {
+    min-width: 0;
+}
+
+.movies-main h1 {
+    margin: 0 0 24px;
+    font-size: 30px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+/* Coming Soon Banner */
+.movies-coming-soon-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 22px 30px;
+    box-sizing: border-box;
+    margin-bottom: 28px;
+    background: #ffffff;
+    background-image: radial-gradient(#cbd5e1 0.7px, transparent 0.7px);
+    background-size: 16px 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.movies-coming-soon-banner h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.3px;
+}
+
+.movies-coming-soon-banner .movies-explore-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #f43f5e;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 180ms ease, color 180ms ease;
+}
+
+.movies-coming-soon-banner .movies-explore-link:hover {
+    color: #e11d48;
+    transform: translateX(3px);
+}
+
+.movies-results-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.movies-results-heading h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.movies-results-heading span {
+    color: #64748b;
+    font-size: 15px;
+}
+
+/* Medium screens */
+@media (max-width: 1250px) {
+    .movies-page {
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .movies-main h1 {
+        font-size: 26px;
+    }
+}
+
+/* Tablet and mobile */
+@media (max-width: 850px) {
+    .movies-page {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+        padding: 20px;
+    }
+
+    .movies-main h1 {
+        font-size: 25px;
+        margin-bottom: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movies-page {
+        padding: 14px;
+    }
+
+    .movies-main h1 {
+        font-size: 22px;
+    }
+}

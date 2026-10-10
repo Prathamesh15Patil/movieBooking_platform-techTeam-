@@ -1,0 +1,63 @@
+.pp-movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 32px;
+    width: 100%;
+    align-items: start;
+}
+
+.pp-movie-grid-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    padding: 30px 20px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.pp-movie-grid-empty-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.pp-movie-grid-empty h3 {
+    margin: 0 0 8px;
+    color: #27272a;
+    font-size: 20px;
+}
+
+.pp-movie-grid-empty p {
+    margin: 0;
+    color: #71717a;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Smaller desktop and laptops */
+@media (max-width: 1250px) {
+    .pp-movie-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 26px 18px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 850px) {
+    .pp-movie-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px 16px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .pp-movie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px 14px;
+    }
+}

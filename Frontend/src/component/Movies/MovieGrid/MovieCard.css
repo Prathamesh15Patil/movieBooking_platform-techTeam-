@@ -1,0 +1,119 @@
+.pp-movie-card {
+    display: block;
+    min-width: 0;
+    color: #202020;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.pp-movie-card-poster {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.68;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #e5e7eb;
+}
+
+.pp-movie-card-poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 300ms ease;
+}
+
+.pp-movie-card:hover .pp-movie-card-poster img {
+    transform: scale(1.045);
+}
+
+.pp-movie-card-rating {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.94);
+    color: #ffffff;
+}
+
+.pp-movie-card-star {
+    color: #f43f5e;
+    font-size: 19px;
+    line-height: 1;
+}
+
+.pp-movie-card-rating-value {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pp-movie-card-votes {
+    margin-left: auto;
+    color: #d4d4d8;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.pp-movie-card-details {
+    padding-top: 12px;
+}
+
+.pp-movie-card-details h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+    transition: color 200ms ease;
+}
+
+.pp-movie-card:hover .pp-movie-card-details h3 {
+    color: #f43f5e;
+}
+
+.pp-movie-card-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    color: #71717a;
+    font-size: 13px;
+}
+
+.pp-movie-card-dot {
+    color: #a1a1aa;
+}
+
+@media (max-width: 480px) {
+    .pp-movie-card-poster {
+        border-radius: 10px;
+    }
+
+    .pp-movie-card-rating {
+        gap: 4px;
+        padding: 7px 5px;
+    }
+
+    .pp-movie-card-rating-value {
+        font-size: 12px;
+    }
+
+    .pp-movie-card-votes {
+        font-size: 9px;
+    }
+
+    .pp-movie-card-details h3 {
+        font-size: 15px;
+    }
+
+    .pp-movie-card-meta {
+        font-size: 12px;
+    }
+}
