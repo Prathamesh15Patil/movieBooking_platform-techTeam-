@@ -1,130 +1,18 @@
-
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import Navigation from "../component/Home/Navigationbar/Navigation";
 import CtfAd from "../component/Home/Ad_Discount/Ctfad";
 import Filters from "../component/Movies/Filters/Filters";
 import MovieGrid from "../component/Movies/MovieGrid/MovieGrid";
+import { ALL_SYSTEM_MOVIES } from "../utils/movieData";
 
 import "./Movies.css";
 
-const ALL_MOVIES = [
-    {
-        id: "drishyam-2",
-        title: "Drishyam: The Conclusion",
-        language: "Hindi",
-        genres: ["Drama", "Mystery", "Thriller"],
-        format: ["2D"],
-        certificate: "UA",
-        rating: "8.9",
-        votes: "76.4K+ Votes",
-        image: "/Drishyam-The-Conclusion-poster-2026.jpeg",
-    },
-    {
-        id: "bail",
-        title: "Bail",
-        language: "Kannada",
-        genres: ["Crime", "Drama", "Thriller"],
-        format: ["2D"],
-        certificate: "UA",
-        rating: "8.7",
-        votes: "2.8K+ Votes",
-        image: "/bail-2026.jpg",
-    },
-    {
-        id: "premada-oorali",
-        title: "Premada Oorali",
-        language: "Kannada",
-        genres: ["Drama", "Romance"],
-        format: ["2D"],
-        certificate: "U",
-        rating: "9.6",
-        votes: "46.8K+ Votes",
-        image: "/pramad.jpg",
-    },
-    {
-        id: "hanuman-ansh",
-        title: "Hanuman Ansh",
-        language: "Hindi",
-        genres: ["Biography", "Drama"],
-        format: ["2D", "3D"],
-        certificate: "U",
-        rating: "9.6",
-        votes: "281K+ Votes",
-        image: "/hanumanansh.webp",
-    },
-    {
-        id: "the-social-reckoning",
-        title: "The Social Reckoning",
-        language: "English",
-        genres: ["Biography", "Drama", "Thriller"],
-        format: ["2D"],
-        certificate: "A",
-        rating: "8.4",
-        votes: "7.8K+ Likes",
-        image: "/the%20social.png",
-    },
-    {
-        id: "doremon-castle-undersea",
-        title: "Doremon: Castle of the Undersea Devil",
-        language: "English",
-        genres: ["Action", "Adventure", "Fantasy"],
-        format: ["2D", "3D", "IMAX"],
-        certificate: "U",
-        rating: "8.8",
-        votes: "12.6K+ Votes",
-        image: "/doremon1.jpg",
-    },
-];
-
-const UPCOMING_MOVIES = [
-    {
-        id: "jailer-2",
-        title: "Jailer 2",
-        language: "Tamil",
-        genres: ["Action", "Thriller"],
-        format: ["2D", "IMAX"],
-        certificate: "UA",
-        rating: "9.2",
-        votes: "156K+ Likes",
-        image: "/Jailer_2_poster.jpg",
-    },
-    {
-        id: "rajini-jailer-2",
-        title: "Rajini: The Jailer 2",
-        language: "Tamil",
-        genres: ["Action", "Thriller"],
-        format: ["2D"],
-        certificate: "UA",
-        rating: "9.0",
-        votes: "128K+ Likes",
-        image: "/Jailer2.jpeg",
-    },
-    {
-        id: "emperor-sarat-chandra",
-        title: "Emperor vs Sarat Chandra",
-        language: "Hindi",
-        genres: ["Drama", "Historical"],
-        format: ["2D"],
-        certificate: "UA",
-        rating: "8.5",
-        votes: "19.9K+ Likes",
-        image: "/Emperor_vs_Sarat_Chandra_poster.jpg",
-    },
-    {
-        id: "bohurupi-golden-daku",
-        title: "Bohurupi: The Golden Daku",
-        language: "Hindi",
-        genres: ["Action", "Drama"],
-        format: ["2D"],
-        certificate: "UA",
-        rating: "8.6",
-        votes: "14.4K+ Likes",
-        image: "/baharupi2.jpg",
-    },
-];
-
 const Movies = () => {
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get("search") || "";
+
     const [languages, setLanguages] = useState([]);
     const [genres, setGenres] = useState([]);
     const [formats, setFormats] = useState([]);
@@ -156,9 +44,24 @@ const Movies = () => {
         setFormats([]);
     };
 
-    const sourceMovies = showUpcoming ? UPCOMING_MOVIES : ALL_MOVIES;
+    const sourceMovies = searchQuery
+        ? ALL_SYSTEM_MOVIES
+        : (showUpcoming
+            ? ALL_SYSTEM_MOVIES.filter((m) => m.isUpcoming)
+            : ALL_SYSTEM_MOVIES.filter((m) => !m.isUpcoming));
 
     const displayedMovies = sourceMovies.filter((movie) => {
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase().trim();
+            const titleMatch = movie.title.toLowerCase().includes(q);
+            const langMatch = movie.language.toLowerCase().includes(q);
+            const genreMatch = Array.isArray(movie.genres)
+                ? movie.genres.some((g) => g.toLowerCase().includes(q))
+                : movie.genres.toLowerCase().includes(q);
+
+            if (!titleMatch && !langMatch && !genreMatch) return false;
+        }
+
         if (languages.length > 0 && !languages.includes(movie.language)) {
             return false;
         }
@@ -209,7 +112,11 @@ const Movies = () => {
                     </div>
 
                     <div className="movies-results-heading">
-                        <h2>{showUpcoming ? "Upcoming Movies" : "Now Showing"}</h2>
+                        <h2>
+                            {searchQuery
+                                ? `Search Results for "${searchQuery}"`
+                                : (showUpcoming ? "Upcoming Movies" : "Now Showing")}
+                        </h2>
                         <span>{displayedMovies.length} movies</span>
                     </div>
 

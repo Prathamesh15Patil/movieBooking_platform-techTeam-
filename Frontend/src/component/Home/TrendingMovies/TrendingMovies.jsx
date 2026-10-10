@@ -1,58 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./TrendingMovies.css";
-
-const trendingMovies = [
-    {
-        title: "Drishyam: The Conclusion",
-        genres: "Drama / Mystery / Thriller",
-        rating: "8.9/10",
-        votes: "76.4K+ Votes",
-        images: [
-            "/Drishyam-The-Conclusion-poster-2026.jpeg",
-            "/drishyam2.jpg",
-            "/drishyam3.jpg",
-        ],
-    },
-    {
-        title: "Bail",
-        genres: "Crime / Drama / Thriller",
-        rating: "8.7/10",
-        votes: "2.8K+ Votes",
-        images: ["/bail-2026.jpg", "/bail.jpg", "/bail2.jpg"],
-    },
-    {
-        title: "Premada Oorali",
-        genres: "Drama / Romance",
-        rating: "9.6/10",
-        votes: "46.8K+ Votes",
-        images: ["/pramad.jpg", "/pramad2.png", "/pramad3.jpeg"],
-    },
-    {
-        title: "Hanuman Ansh",
-        genres: "Biography / Devotional / Drama",
-        rating: "9.6/10",
-        votes: "281K+ Votes",
-        images: ["/hanumanansh.webp", "/hanumanansh2.png", "/hanumanansh3.webp"],
-    },
-    {
-        title: "The Social Reckoning",
-        genres: "Biography / Drama / Thriller",
-        rating: "8.4/10",
-        votes: "7.8K+ Likes",
-        images: [
-            "/the%20social.png",
-            "/thesocial.jpg",
-            "/thesocialreckoning_mikeymadison.jpg",
-        ],
-    },
-    {
-        title: "Doremon: Castle of the Undersea Devil",
-        genres: "Animation / Adventure / Fantasy",
-        rating: "8.8/10",
-        votes: "12.6K+ Votes",
-        images: ["/doremon1.jpg", "/doremon2.jpeg", "/doremon3.jpg"],
-    },
-];
+import { NOW_SHOWING_MOVIES } from "../../../utils/movieData";
 
 const IMAGE_INTERVAL = 2500;
 
@@ -85,7 +34,7 @@ const TrendingMovies = ({ showIntro = false }) => {
 
     // Image currently displayed for each movie
     const [activeImages, setActiveImages] = useState(
-        () => trendingMovies.map(() => 0)
+        () => NOW_SHOWING_MOVIES.map(() => 0)
     );
 
     // Index of the movie whose images are changing automatically
@@ -99,14 +48,14 @@ const TrendingMovies = ({ showIntro = false }) => {
             setActiveImages((previous) =>
                 previous.map((imageIndex, movieIndex) =>
                     movieIndex === currentMovieIndex
-                        ? (imageIndex + 1) % trendingMovies[movieIndex].images.length
+                        ? (imageIndex + 1) % NOW_SHOWING_MOVIES[movieIndex].images.length
                         : imageIndex
                 )
             );
 
             // Start changing the next movie after this movie's image changes
             setCurrentMovieIndex((previous) =>
-                (previous + 1) % trendingMovies.length
+                (previous + 1) % NOW_SHOWING_MOVIES.length
             );
         }, IMAGE_INTERVAL);
 
@@ -117,7 +66,7 @@ const TrendingMovies = ({ showIntro = false }) => {
     useEffect(() => {
         if (hoveredMovie === null) return;
 
-        const movieIndex = trendingMovies.findIndex(
+        const movieIndex = NOW_SHOWING_MOVIES.findIndex(
             (movie) => movie.title === hoveredMovie
         );
 
@@ -128,7 +77,7 @@ const TrendingMovies = ({ showIntro = false }) => {
                 previous.map((imageIndex, index) =>
                     index === movieIndex
                         ? (imageIndex + 1) %
-                        trendingMovies[movieIndex].images.length
+                        NOW_SHOWING_MOVIES[movieIndex].images.length
                         : imageIndex
                 )
             );
@@ -182,41 +131,31 @@ const TrendingMovies = ({ showIntro = false }) => {
             </div>
 
             <div className="trending-movies-list" ref={listRef}>
-                {trendingMovies.map((movie, index) => {
+                {NOW_SHOWING_MOVIES.map((movie, index) => {
                     const isHovered = hoveredMovie === movie.title;
                     const visibleImage = activeImages[index];
 
                     return (
-                        <a
-                            className={`trending-movie-card${isHovered ? " is-hovered" : ""
-                                }`}
-                            href="#movies"
+                        <Link
+                            className={`trending-movie-card${isHovered ? " is-hovered" : ""}`}
+                            to={`/movie/${movie.id}`}
                             key={movie.title}
-                            onMouseEnter={() =>
-                                handleMovieEnter(movie.title)
-                            }
+                            onMouseEnter={() => handleMovieEnter(movie.title)}
                             onMouseLeave={handleMovieLeave}
-                            onFocus={() =>
-                                handleMovieEnter(movie.title)
-                            }
+                            onFocus={() => handleMovieEnter(movie.title)}
                             onBlur={handleMovieLeave}
                         >
                             <div className="trending-movie-poster">
                                 {movie.images.map((image, imageIndex) => (
                                     <img
-                                        className={`trending-movie-image${imageIndex === visibleImage
-                                                ? " is-active"
-                                                : ""
-                                            }`}
+                                        className={`trending-movie-image${imageIndex === visibleImage ? " is-active" : ""}`}
                                         src={image}
                                         alt={
                                             imageIndex === visibleImage
                                                 ? `${movie.title} poster`
                                                 : ""
                                         }
-                                        aria-hidden={
-                                            imageIndex !== visibleImage
-                                        }
+                                        aria-hidden={imageIndex !== visibleImage}
                                         loading="lazy"
                                         key={image}
                                     />
@@ -233,8 +172,8 @@ const TrendingMovies = ({ showIntro = false }) => {
                             </div>
 
                             <h3>{movie.title}</h3>
-                            <p>{movie.genres}</p>
-                        </a>
+                            <p>{Array.isArray(movie.genres) ? movie.genres.join(" / ") : movie.genres}</p>
+                        </Link>
                     );
                 })}
             </div>
