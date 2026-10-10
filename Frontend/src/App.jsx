@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import './App.css'
 import { Routes, Route, useLocation } from "react-router-dom"
 import { useState } from 'react'
@@ -13,7 +14,17 @@ import Navbar from './component/common/Navbar'
 import Intro from "./component/common/Intro";
 import Footer from "./component/common/Footer";
 
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
 
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
 
 function App() {
   const location = useLocation();
@@ -31,6 +42,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       {/* Intro animation */}
       {showIntro && (
         <Intro

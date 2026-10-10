@@ -12,7 +12,7 @@ const Navigation = () => {
 
     const navItems = [
         { name: "Home", path: "/", targetId: "top" },
-        { name: "Movies", path: "/movies", targetId: "movies" },
+        { name: "Movies", path: "/movies" },
         { name: "Cinemas", path: "/cinemas", targetId: "cinemas" },
         { name: "Offers", path: "/#offers", targetId: "offers" },
         { name: "Coming Soon", path: "/#coming-soon", targetId: "coming-soon" },
