@@ -243,8 +243,27 @@
     padding: 8px;
   }
 
-  .signin-button {
-    min-width: 70px;
-    padding: 0 12px;
+}
+
+
+/* ================================
+   SECTION SCROLL MARGIN OFFSETS
+================================ */
+
+#offers {
+  scroll-margin-top: 40px;
+}
+
+#coming-soon {
+  scroll-margin-top: 100px;
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+
+  #offers,
+  #coming-soon,
+  #cinemas {
+    scroll-margin-top: 90px;
   }
 }

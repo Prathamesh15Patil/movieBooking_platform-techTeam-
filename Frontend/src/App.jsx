@@ -18,7 +18,15 @@ function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (!hash) {
+    if (hash) {
+      const id = hash.replace("#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    } else {
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
@@ -49,7 +57,7 @@ function App() {
           onComplete={handleIntroComplete}
         />
       )}
-      <Navbar />
+      {!showIntro && <Navbar />}
       <div>
         <Routes>
           <Route path="/" element={<Home showIntro={showIntro} />} />
