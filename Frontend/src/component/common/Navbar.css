@@ -32,15 +32,15 @@
   cursor: pointer;
 }
 
-/* Centered Search Bar Wrapper */
+/* Search Bar Wrapper */
 .navbar-search-wrapper {
   flex: 1;
   max-width: 58rem;
   /* max-w-md */
-  margin-left: 1rem;
+  margin-left: 1.5rem;
   margin-right: 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   z-index: 10001;
 }

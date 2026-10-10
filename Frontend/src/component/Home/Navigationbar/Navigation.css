@@ -55,8 +55,9 @@
     transition: color 200ms ease;
 }
 
-/* Change color only while hovering */
-.pp-navigation-link:hover {
+/* Change color on hover or when active */
+.pp-navigation-link:hover,
+.pp-navigation-link.is-active {
     color: #f43f5e;
 }
 
@@ -67,7 +68,7 @@
     bottom: 5px;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 2.5px;
     border-radius: 2px;
     background: #f43f5e;
     transform: scaleX(0);
@@ -75,8 +76,9 @@
     transition: transform 250ms ease;
 }
 
-/* Underline appears only on hover */
-.pp-navigation-link:hover::after {
+/* Underline appears on hover and when active */
+.pp-navigation-link:hover::after,
+.pp-navigation-link.is-active::after {
     transform: scaleX(1);
 }
 
