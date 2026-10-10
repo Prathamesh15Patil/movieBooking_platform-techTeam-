@@ -101,6 +101,7 @@
     z-index: 10003;
     backdrop-filter: blur(16px);
     box-sizing: border-box;
+    padding-bottom: 10px;
 
     /* Custom thin scrollbar for Firefox */
     scrollbar-width: thin;
@@ -129,6 +130,7 @@
 .search-results-list {
     display: flex;
     flex-direction: column;
+    padding-bottom: 6px;
 }
 
 .search-result-item {
@@ -143,6 +145,7 @@
 
 .search-result-item:last-child {
     border-bottom: none;
+    margin-bottom: 4px;
 }
 
 .search-result-item:hover {
