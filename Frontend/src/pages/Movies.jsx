@@ -108,6 +108,27 @@ const Movies = () => {
                         </button>
                     </div>
 
+                    {(searchParams.get("discount") === "20" || sessionStorage.getItem("activeDiscount") === "20") && (
+                        <div className="navratri-offer-alert">
+
+                            <div>
+                                <strong>Navratri Special Offer Activated!</strong>
+                                <p>Flat 20% OFF instant discount applied on your movie ticket bookings.</p>
+                            </div>
+                            <button
+                                type="button"
+                                className="clear-offer-btn"
+                                onClick={() => {
+                                    sessionStorage.removeItem("activeDiscount");
+                                    sessionStorage.removeItem("discountName");
+                                    window.location.href = "/movies";
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    )}
+
                     <div className="movies-results-heading">
                         <h2>
                             {searchQuery

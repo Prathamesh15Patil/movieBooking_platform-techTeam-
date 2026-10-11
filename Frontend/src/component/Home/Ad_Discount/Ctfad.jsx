@@ -4,25 +4,23 @@ import "./Ctfad.css";
 
 const promotions = [
     {
+        id: "navratri-offer",
+        image: "/Navratrioffer.png",
+        // eyebrow: "NAVRATRI SPECIAL OFFER",
+        // title: <>Get 20% OFF<br />on movie tickets.</>,
+        // description: "Celebrate Navratri with 20% instant discount applied on your next movie booking.",
+        cta: "Claim 20% OFF →",
+        discount: 20,
+        path: "/movies?discount=20",
+    },
+    {
+        id: "popcornpass-exclusive",
         image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=85",
         eyebrow: "POPCORNPASS EXCLUSIVE",
         title: <>Big screen stories,<br />better prices.</>,
         description: "Book your next movie night and save up to 20%.",
-        cta: "Explore offers →",
-    },
-    {
-        image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1600&q=85",
-        eyebrow: "WEEKDAY SPECIAL",
-        title: <>More movies,<br />less spending.</>,
-        description: "Enjoy special prices on weekday shows before 6 PM.",
-        cta: "View weekday deals →",
-    },
-    {
-        image: "https://images.unsplash.com/photo-1595769816263-9b910be24d5f?auto=format&fit=crop&w=1600&q=85",
-        eyebrow: "MEMBERS GET MORE",
-        title: <>Your next night out,<br />rewarded.</>,
-        description: "Earn points every time you book tickets and treats.",
-        cta: "Join PopcornPass →",
+        cta: "Explore movies →",
+        path: "/movies",
     },
 ];
 
@@ -36,6 +34,13 @@ const CtfAd = ({ showIntro = false }) => {
     const [isInView, setIsInView] = useState(false);
     const [activeSlide, setActiveSlide] = useState(0);
     const [isSliding, setIsSliding] = useState(true);
+
+    const handleBannerClick = (promotion) => {
+        if (promotion.discount) {
+            sessionStorage.setItem("activeDiscount", "20");
+            sessionStorage.setItem("discountName", "Navratri 20% OFF");
+        }
+    };
 
     // Trailer modal state
     const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
@@ -195,7 +200,8 @@ const CtfAd = ({ showIntro = false }) => {
                         {[...promotions, promotions[0]].map((promotion, index) => (
                             <Link
                                 className="ad-banner ad-banner-wide"
-                                to="/thank-you"
+                                to={promotion.path || "/movies"}
+                                onClick={() => handleBannerClick(promotion)}
                                 key={`${promotion.eyebrow}-${index}`}
                                 aria-hidden={index !== activeSlide}
                                 tabIndex={index === activeSlide ? 0 : -1}

@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "./Searchbar.css";
 import BorderGlow from "./Borderglow";
 import { ALL_SYSTEM_MOVIES } from "../../utils/movieData";
+import { searchAllCinemas } from "../../utils/cinemaData";
 
-const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChange }) => {
+const Searchbar = ({ onSearch, placeholder = "Search for movies or cinemas...", onFocusChange }) => {
     const [query, setQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
@@ -31,6 +32,10 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChan
         })
         : [];
 
+    const filteredCinemas = query.trim()
+        ? searchAllCinemas(query.trim())
+        : [];
+
     const handleChange = (e) => {
         const value = e.target.value;
         setQuery(value);
@@ -52,7 +57,11 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChan
         if (e.key === "Enter" && query.trim()) {
             setIsOpen(false);
             if (onFocusChange) onFocusChange(false);
-            navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
+            if (filteredMovies.length === 0 && filteredCinemas.length > 0) {
+                navigate(`/cinemas?cinema=${filteredCinemas[0].id}`);
+            } else {
+                navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
+            }
         } else if (e.key === "Escape") {
             setIsOpen(false);
             if (onFocusChange) onFocusChange(false);
@@ -64,6 +73,13 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChan
         setQuery("");
         if (onFocusChange) onFocusChange(false);
         navigate(`/movie/${movieId}`);
+    };
+
+    const handleSelectCinema = (cinemaId) => {
+        setIsOpen(false);
+        setQuery("");
+        if (onFocusChange) onFocusChange(false);
+        navigate(`/cinemas?cinema=${cinemaId}`);
     };
 
     // Close on click outside
@@ -146,8 +162,9 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChan
             {/* Live Search Results Dropdown */}
             {isOpen && query.trim().length > 0 && (
                 <div className="search-dropdown">
-                    {filteredMovies.length > 0 ? (
+                    {filteredMovies.length > 0 || filteredCinemas.length > 0 ? (
                         <div className="search-results-list">
+                            {/* Movies Section */}
                             {filteredMovies.map((movie) => (
                                 <div
                                     key={movie.id}
@@ -178,19 +195,62 @@ const Searchbar = ({ onSearch, placeholder = "Search for movies...", onFocusChan
                                     </div>
                                 </div>
                             ))}
-                            <div
-                                className="search-view-all"
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
-                                }}
-                            >
-                                View all results for "{query.trim()}" →
-                            </div>
+
+                            {/* Cinemas Section */}
+                            {filteredCinemas.length > 0 && (
+                                <>
+                                    <div className="search-section-divider">
+                                        <span>Cinemas & Theaters</span>
+                                    </div>
+                                    {filteredCinemas.slice(0, 5).map((cinema) => (
+                                        <div
+                                            key={cinema.id}
+                                            className="search-result-item cinema-result-item"
+                                            onClick={() => handleSelectCinema(cinema.id)}
+                                        >
+                                            <div className="search-result-cinema-icon">
+                                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
+                                                    <line x1="7" y1="2" x2="7" y2="22" />
+                                                    <line x1="17" y1="2" x2="17" y2="22" />
+                                                    <line x1="2" y1="12" x2="22" y2="12" />
+                                                    <line x1="2" y1="7" x2="7" y2="7" />
+                                                    <line x1="2" y1="17" x2="7" y2="17" />
+                                                    <line x1="17" y1="17" x2="22" y2="17" />
+                                                    <line x1="17" y1="7" x2="22" y2="7" />
+                                                </svg>
+                                            </div>
+                                            <div className="search-result-info">
+                                                <div className="search-result-title">{cinema.name}</div>
+                                                <div className="search-result-meta">
+                                                    <span>{cinema.address}</span>
+                                                    <span className="dot">•</span>
+                                                    <span>{cinema.city}</span>
+                                                </div>
+                                            </div>
+                                            <div className="search-result-badge cinema-pill-badge">
+                                                Cinema Details ›
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+
+                            {filteredMovies.length > 0 && (
+                                <div
+                                    className="search-view-all"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        navigate(`/movies?search=${encodeURIComponent(query.trim())}`);
+                                    }}
+                                >
+                                    View all movie results for "{query.trim()}" →
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className="search-no-results">
-                            <span>🎬</span> No movies found matching "{query}"
+                            <span>🎬</span> No movies or cinemas found matching "{query}"
                         </div>
                     )}
                 </div>

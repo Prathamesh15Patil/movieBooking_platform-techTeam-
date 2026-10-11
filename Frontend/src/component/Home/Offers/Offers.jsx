@@ -13,12 +13,12 @@ const offers = [
         button: "Explore Movies",
     },
     {
-        image: "/ticket1.png",
-        alt: "Movie ticket",
+        image: "/Navratrioffer.png",
+        alt: "Navratri Special Offer",
         eyebrow: "YOUR NEXT BIG-SCREEN MOMENT",
-        title: "Your next favorite movie is one ticket away.",
+        title: "Get 20% OFF on your next favorite movie.",
         description:
-            "Discover movies, choose your seats, and enjoy an unforgettable cinema experience.",
+            "The Navratri offer is back. Discover movies, choose your seats, and enjoy an unforgettable cinema experience.",
         button: "Book Your Tickets",
     },
 ];

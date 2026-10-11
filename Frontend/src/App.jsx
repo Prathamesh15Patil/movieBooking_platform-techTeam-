@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import MovieDetail from './pages/MovieDetail'
 import Payment from './pages/Payment'
 import Movies from './pages/Movies'
+import Cinemas from './component/Movies/Cinemas/Cinemas'
 import Booking from './pages/Booking'
 import Profile from './pages/Profile'
 import ThankYou from './pages/ThankYou'
@@ -64,6 +65,7 @@ function App() {
           <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/movies" element={<Movies />} />
+          <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/thank-you" element={<ThankYou />} />

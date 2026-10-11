@@ -1,0 +1,70 @@
+/* Header Bar */
+.booking-header {
+    background-color: #ffffff;
+    padding: 14px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.booking-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.booking-back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #475569;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.booking-back-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.booking-movie-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 2px 0;
+}
+
+.lang-span {
+    color: #e11d48;
+    font-weight: 600;
+}
+
+.booking-cinema-meta {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.edit-tickets-btn {
+    background: #ffffff;
+    border: 1px solid #e11d48;
+    color: #e11d48;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+
+.edit-tickets-btn:hover {
+    background-color: #fff1f2;
+}

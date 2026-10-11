@@ -123,7 +123,31 @@ const HeroSection = ({ movie }) => {
                 <div className="movie-hero-actions">
                     <button
                         className="movie-book-button"
-                        onClick={() => navigate("/booking")}
+                        onClick={() => {
+                            sessionStorage.setItem("fromCinema", "false");
+                            sessionStorage.removeItem("lastCinemaId");
+                            const existing = sessionStorage.getItem("bookingState");
+                            let prev = {};
+                            try {
+                                if (existing) prev = JSON.parse(existing);
+                            } catch (e) {}
+                            sessionStorage.setItem(
+                                "bookingState",
+                                JSON.stringify({
+                                    ...prev,
+                                    movieTitle: movie.title,
+                                    movieId: movie.id,
+                                    fromCinema: false,
+                                })
+                            );
+                            navigate("/booking", {
+                                state: {
+                                    fromCinema: false,
+                                    fromMovie: true,
+                                    movieId: movie.id,
+                                },
+                            });
+                        }}
                     >
                         Book Tickets
                     </button>

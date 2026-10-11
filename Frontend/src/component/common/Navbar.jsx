@@ -16,7 +16,6 @@ const Navbar = () => {
     const navItems = [
         { name: "Home", path: "/", targetId: "top" },
         { name: "Movies", path: "/movies" },
-        { name: "Cinemas", path: "/cinemas", targetId: "cinemas" },
         { name: "Offers", path: "/#offers", targetId: "offers" },
         { name: "Coming Soon", path: "/#coming-soon", targetId: "coming-soon" },
     ];
@@ -42,7 +41,6 @@ const Navbar = () => {
 
     const isItemActive = (item) => {
         if (item.path === "/movies") return location.pathname === "/movies";
-        if (item.path === "/cinemas") return location.pathname === "/cinemas";
         if (location.pathname === "/") {
             if (item.targetId === "top") return !activeHash || activeHash === "#top";
             if (item.targetId) return activeHash === `#${item.targetId}`;

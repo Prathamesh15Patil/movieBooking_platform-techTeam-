@@ -1,0 +1,55 @@
+/* Bottom Checkout Bar */
+.booking-bottom-pay-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    padding: 16px 5%;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    animation: slideUpBar 0.25s ease-out;
+}
+
+@keyframes slideUpBar {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.selected-seats-text {
+    font-size: 14px;
+    color: #334155;
+}
+
+.pay-total-amount {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.pay-proceed-btn {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+}
+
+.pay-proceed-btn:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+}

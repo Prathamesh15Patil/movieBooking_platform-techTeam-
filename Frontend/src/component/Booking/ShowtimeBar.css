@@ -1,0 +1,75 @@
+/* Showtimes Bar */
+.booking-showtime-bar {
+    background-color: #ffffff;
+    padding: 12px 5%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.showtime-bar-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.showtime-bar-pills-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0;
+}
+
+.showtime-bar-pill {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.showtime-bar-pill:hover:not(.active) {
+    border-color: #16a34a;
+    color: #16a34a;
+    transform: translateY(-1px);
+    background-color: #f0fdf4;
+}
+
+.showtime-bar-pill.active {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    border-color: #15803d;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+    transform: translateY(-1px) scale(1.03);
+}
+
+.showtime-pill-sound {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #64748b;
+    letter-spacing: 0.3px;
+}
+
+.showtime-bar-pill.active .showtime-pill-sound {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
