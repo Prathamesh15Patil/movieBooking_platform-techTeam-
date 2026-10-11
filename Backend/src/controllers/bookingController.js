@@ -3,7 +3,7 @@ import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import sendTicketEmail from "../utils/sendTicketEmail.js";
 import { calculatePrice } from "../utils/pricing.js";
-// [REDIS] import redis, { seatLockKey } from "../db/redis.js";
+import redis, { seatLockKey } from "../db/redis.js";
 
 const showPopulate = {
   path: "show",
@@ -11,8 +11,7 @@ const showPopulate = {
   populate: [{ path: "movie" }, { path: "theater" }],
 };
 
-// POST /api/bookings   body: { show: "<showId>", seats: ["A1", "A2"] }
-// This is the "Pay" button: dummy payment succeeds, booking is confirmed, ticket is emailed.
+// This is the "Pay" button
 export const createBooking = async (req, res, next) => {
   try {
     const { show: showId, seats } = req.body;
@@ -37,11 +36,10 @@ export const createBooking = async (req, res, next) => {
 
     const price = calculatePrice(show.ticketPrice, seats.length);
 
-    // [REDIS] require a valid hold (uncomment this block)
-    // const locks = await redis.mGet(seats.map((s) => seatLockKey(showId, s)));
-    // if (!locks.every((v) => v === req.user._id.toString())) {
-    //   return res.status(409).json({ message: "Seats not held by you, or your hold expired" });
-    // }
+    const locks = await redis.mGet(seats.map((s) => seatLockKey(showId, s)));
+    if (!locks.every((v) => v === req.user._id.toString())) {
+      return res.status(409).json({ message: "Seats not held by you, or your hold expired" });
+    }
 
     // Only succeeds if NONE of the requested seats is already taken
     const result = await Show.updateOne(
@@ -79,8 +77,7 @@ export const createBooking = async (req, res, next) => {
       throw err;
     }
 
-    // [REDIS] release the holds (uncomment this line)
-    // await redis.del(seats.map((s) => seatLockKey(showId, s)));
+     await redis.del(seats.map((s) => seatLockKey(showId, s)));
 
     req.app.get("io")?.to(`show:${showId}`).emit("seatsBooked", { showId, seats });
 
