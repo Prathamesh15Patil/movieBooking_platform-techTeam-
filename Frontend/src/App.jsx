@@ -1,5 +1,6 @@
 import './App.css'
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
+import { useState } from 'react'
 
 import Home from './pages/Home'
 import MovieDetail from './pages/MovieDetail'
@@ -8,11 +9,30 @@ import Movies from './pages/Movies'
 import Booking from './pages/Booking'
 import Profile from './pages/Profile'
 import Navbar from './component/common/Navbar'
+import Intro from "./component/common/Intro";
 
 function App() {
+  const location = useLocation();
+
+  // Controls whether the intro is visible - only show on landing page ("/") when user enters the site
+  const [showIntro, setShowIntro] = useState(() => {
+    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
+    return location.pathname === '/' && !hasSeenIntro;
+  });
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('hasSeenIntro', 'true');
+    setShowIntro(false);
+  };
 
   return (
     <>
+      {/* Intro animation */}
+      {showIntro && (
+        <Intro
+          onComplete={handleIntroComplete}
+        />
+      )}
       <Navbar />
       <div>
         <Routes>
@@ -29,3 +49,4 @@ function App() {
 }
 
 export default App
+
