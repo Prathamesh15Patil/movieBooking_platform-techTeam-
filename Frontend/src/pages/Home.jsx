@@ -1,12 +1,28 @@
-import React from 'react'
+import React from "react";
+import "./Home.css";
 
-const Home = () => {
+import Navigation from "../component/Home/Navigationbar/Navigation";
+import CtfAd from "../component/Home/Ad_Discount/Ctfad";
+import TrendingMovies from "../component/Home/TrendingMovies/TrendingMovies";
+import Offers from "../component/Home/Offers/Offers";
+import ComingSoon from "../component/Home/ComingSoon/ComingSoon";
+
+
+
+const Home = ({ showIntro = false }) => {
     return (
-        <div>
-            Home Page
-            <h1 className="text-amber-500 text-5xl">Welcome to PopcornPass</h1>
-        </div>
-    )
-}
+        <main className="home-page">
 
-export default Home
+            <Navigation />
+            <CtfAd showIntro={showIntro} />
+            <TrendingMovies showIntro={showIntro} />
+            <Offers showIntro={showIntro} />
+            <ComingSoon showIntro={showIntro} />
+
+
+
+        </main>
+    );
+};
+
+export default Home;

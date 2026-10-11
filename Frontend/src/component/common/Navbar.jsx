@@ -1,26 +1,40 @@
+import { Link } from "react-router-dom";
+import Searchbar from "./Searchbar";
+import CitySelector from "./CitySelector";
+import "./Navbar.css";
+
 const Navbar = () => {
     return (
-        <nav className="flex items-center justify-between bg-slate-950 px-6 py-4 text-white">
-            <a href="/" className="text-xl font-bold">
+        <nav className="navbar">
+
+            {/* Logo */}
+            <Link to="/" className="navbar-logo">
                 🎬 PopcornPass
-            </a>
+            </Link>
 
-            <div className="flex items-center gap-6">
-                <a href="/" className="transition-colors hover:text-amber-400">
-                    Home
-                </a>
-                <a href="/movies" className="transition-colors hover:text-amber-400">
-                    Movies
-                </a>
-                <a href="/booking" className="transition-colors hover:text-amber-400">
-                    My Bookings
-                </a>
-                <a href="/profile" className="transition-colors hover:text-amber-400">
-                    Profile
-                </a>
+            {/* Search */}
+            <div className="navbar-search-wrapper">
+                <Searchbar />
             </div>
-        </nav>
-    )
-}
 
-export default Navbar
+            {/* Right side */}
+            <div className="navbar-right">
+
+                {/* City */}
+                <CitySelector />
+
+                {/* Sign In */}
+                <Link
+                    to="/login"
+                    className="signin-button"
+                >
+                    Sign In
+                </Link>
+
+            </div>
+
+        </nav>
+    );
+};
+
+export default Navbar;
