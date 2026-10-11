@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ChevronRight, LogOut, Ticket } from "lucide-react";
-import { Scene, Brand, Clapper, cardStyle, grad } from "./PopcornScene";
-
-// ---- Auth placeholders: swap these three for your real auth ----
-const AUTH_KEY = "popcornpass_user"; // expects JSON like {"name":"Aditi Kamath","avatar":"<optional url>"}
-const getUser = () => { try { return JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { return null; } };
-const signOut = () => localStorage.removeItem(AUTH_KEY);
-const go = (path) => window.location.assign(path); // swap for useNavigate() if you use React Router
+import { Scene, Brand, Clapper } from "./PopcornScene";
+import { cardStyle, grad } from "./authTheme";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 export default function ProfilePage() {
-  const [user] = useState(getUser);
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => { if (!user) go("/login"); }, [user]); // auth guard
-  if (!user) return null;
+  useEffect(() => { if (!loading && !user) navigate("/login", { replace: true }); }, [loading, navigate, user]);
+  if (loading || !user) return null;
 
   const name = user.name || "Popcorn Pass User";
   const initials = name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
@@ -41,8 +39,8 @@ export default function ProfilePage() {
             <h2 className="text-2xl font-semibold text-white">{name}</h2>
           </div>
 
-          <a
-            href="/bookings"
+          <Link
+            to="/booking"
             className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition hover:-translate-y-px hover:border-[#9b5cff]/60 hover:bg-white/[0.07] active:scale-[.98]"
           >
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl text-white shadow-lg shadow-[#7c4dff]/30" style={{ backgroundImage: grad }}>
@@ -53,11 +51,11 @@ export default function ProfilePage() {
               <span className="block text-sm text-white/55">View your upcoming and past movie bookings</span>
             </span>
             <ChevronRight size={20} className="shrink-0 text-white/40 transition group-hover:translate-x-0.5 group-hover:text-white" />
-          </a>
+          </Link>
 
           <button
             type="button"
-            onClick={() => { signOut(); go("/login"); }}
+            onClick={() => navigate("/login")}
             className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 text-sm font-semibold text-red-300 transition hover:bg-red-500/20 hover:text-red-200 active:scale-[.98]"
           >
             <LogOut size={16} />

@@ -1,17 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { api } from "../services/api";
 
 /* ============================================================
    CONFIG — everything you may need to change lives here.
    See setup.md for details.
    ============================================================ */
 const CONFIG = {
-  DEMO_MODE: true, // true = saves in browser localStorage (no backend needed). Set false to use your API.
-  API_BASE: "http://localhost:5000/api", // your backend URL
+  DEMO_MODE: false,
   ROUTES: {
     movies: "/movies", // GET list, POST create, PUT /movies/:id, DELETE /movies/:id
     upload: "/upload", // POST multipart (field "file") -> { url }
   },
-  TOKEN_KEY: "adminToken", // localStorage key holding your admin JWT/token (sent as Bearer)
   CURRENCY: "₹",
   MAX_UPLOAD_MB: 50,
   LANGUAGES: ["English", "Hindi", "Kannada", "Tamil", "Telugu", "Malayalam", "Marathi", "Bengali"],
@@ -26,59 +25,45 @@ const CONFIG = {
 };
 
 /* ---------------- data layer ---------------- */
-const DEMO_KEY = "demo_movies";
 const uid = () => Math.random().toString(36).slice(2, 9);
 
-async function api(path, opts = {}) {
-  const token = localStorage.getItem(CONFIG.TOKEN_KEY);
-  const isForm = opts.body instanceof FormData;
-  const res = await fetch(CONFIG.API_BASE + path, {
-    ...opts,
-    headers: {
-      ...(isForm ? {} : { "Content-Type": "application/json" }),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-  });
-  if (!res.ok) throw new Error((await res.text()) || res.statusText);
-  return res.status === 204 ? null : res.json();
-}
-
-const demoRead = () => JSON.parse(localStorage.getItem(DEMO_KEY) || "[]");
-const demoWrite = (list) => localStorage.setItem(DEMO_KEY, JSON.stringify(list));
-
 const store = {
-  async list() {
-    return CONFIG.DEMO_MODE ? demoRead() : api(CONFIG.ROUTES.movies);
-  },
+  async list() { return (await api.movies()).map((movie) => ({ ...movie, id: movie._id })); },
   async save(movie, isNew) {
-    if (CONFIG.DEMO_MODE) {
-      const list = demoRead();
-      const saved = isNew ? { ...movie, id: "movie" + Date.now() } : movie;
-      demoWrite(isNew ? [saved, ...list] : list.map((m) => (m.id === saved.id ? saved : m)));
-      return saved;
-    }
-    return isNew
-      ? api(CONFIG.ROUTES.movies, { method: "POST", body: JSON.stringify(movie) })
-      : api(`${CONFIG.ROUTES.movies}/${movie.id}`, { method: "PUT", body: JSON.stringify(movie) });
-  },
-  async remove(id) {
-    if (CONFIG.DEMO_MODE) return demoWrite(demoRead().filter((m) => m.id !== id));
-    return api(`${CONFIG.ROUTES.movies}/${id}`, { method: "DELETE" });
-  },
-  async upload(file) {
-    if (file.size > CONFIG.MAX_UPLOAD_MB * 1024 * 1024) throw new Error(`File is larger than ${CONFIG.MAX_UPLOAD_MB} MB`);
-    if (CONFIG.DEMO_MODE) {
-      return new Promise((resolve, reject) => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result);
-        r.onerror = () => reject(new Error("Could not read file"));
-        r.readAsDataURL(file);
+    if (!isNew) throw new Error("The backend supports creating movies, but not editing them.");
+    const saved = await api.createMovie({
+      title: movie.title,
+      description: movie.description,
+      duration: Number(movie.duration),
+      genres: movie.genre,
+      languages: movie.languages,
+      releaseDate: movie.releaseDate,
+      status: movie.status === "archived" ? "ended" : movie.status,
+      assetKey: movie.poster,
+    });
+    for (const show of movie.shows) {
+      await api.createShow({
+        movie: saved._id,
+        theater: show.screen,
+        startTime: `${show.date}T${show.time}`,
+        language: show.language,
+        ticketPrice: Number(show.price),
       });
     }
-    const fd = new FormData();
-    fd.append("file", file);
-    const out = await api(CONFIG.ROUTES.upload, { method: "POST", body: fd });
-    return out.url;
+    return { ...saved, id: saved._id };
+  },
+  async upload() {
+    throw new Error("The backend does not provide a file upload endpoint. Use a poster URL.");
+  },
+  async theatres() {
+    return api.theatres();
+  },
+  async remove() {
+    throw new Error("The backend does not provide movie deletion.");
+  },
+  async legacyUpload(file) {
+    if (file.size > CONFIG.MAX_UPLOAD_MB * 1024 * 1024) throw new Error(`File is larger than ${CONFIG.MAX_UPLOAD_MB} MB`);
+    throw new Error("The backend does not provide a file upload endpoint.");
   },
 };
 
@@ -179,6 +164,7 @@ function Field({ label, error, hint, children, wide }) {
 /* ---------------- page ---------------- */
 export default function AdminMovies() {
   const [movies, setMovies] = useState([]);
+  const [theatres, setTheatres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(blankMovie());
   const [isNew, setIsNew] = useState(true);
@@ -193,9 +179,15 @@ export default function AdminMovies() {
   };
 
   const refresh = async () => {
-    try { setMovies(await store.list()); } catch (e) { say("Could not load movies: " + e.message, true); }
+    try {
+      const [movieList, theatreList] = await Promise.all([store.list(), store.theatres()]);
+      setMovies(movieList);
+      setTheatres(theatreList);
+    } catch (e) { say("Could not load admin data: " + e.message, true); }
     setLoading(false);
   };
+  // Load both collections once when the admin surface opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
   useEffect(() => { refresh(); }, []);
 
   const filtered = useMemo(
@@ -224,12 +216,6 @@ export default function AdminMovies() {
       say(isNew ? "Movie published" : "Changes saved");
     } catch (err) { say("Save failed: " + err.message, true); }
     setSaving(false);
-  };
-
-  const remove = async () => {
-    if (!window.confirm(`Delete "${form.title}"? This cannot be undone.`)) return;
-    try { await store.remove(form.id); await refresh(); startNew(); say("Movie deleted"); }
-    catch (err) { say("Delete failed: " + err.message, true); }
   };
 
   return (
@@ -287,7 +273,7 @@ export default function AdminMovies() {
           <section>
             <h3>Media</h3>
             <div className="ma-cols">
-              <Field label="Poster" error={errors.poster} hint="JPG or PNG, portrait works best"><FileDrop kind="image" value={form.poster} onChange={(v) => set("poster", v)} onError={(m) => say(m, true)} /></Field>
+              <Field label="Poster URL" error={errors.poster} hint="Use an image URL supported by the backend"><input value={form.poster} onChange={(e) => set("poster", e.target.value)} placeholder="https://..." /></Field>
               <Field label="Trailer" hint="Paste a YouTube link, or upload a video file">
                 <input value={form.trailer.startsWith("data:") ? "" : form.trailer} onChange={(e) => set("trailer", e.target.value)} placeholder="https://youtube.com/watch?v=…" />
                 <FileDrop kind="video" value={/^(data:|blob:|\/)/.test(form.trailer) || /\.(mp4|webm)$/i.test(form.trailer) ? form.trailer : ""} onChange={(v) => set("trailer", v)} onError={(m) => say(m, true)} />
@@ -306,7 +292,12 @@ export default function AdminMovies() {
               <div className="ma-show" key={s.id}>
                 <Field label="Date"><input type="date" value={s.date} onChange={(e) => setShow(s.id, "date", e.target.value)} /></Field>
                 <Field label="Time"><input type="time" value={s.time} onChange={(e) => setShow(s.id, "time", e.target.value)} /></Field>
-                <Field label="Screen / theatre"><input value={s.screen} onChange={(e) => setShow(s.id, "screen", e.target.value)} placeholder="Screen 1" /></Field>
+                <Field label="Theatre">
+                  <select value={s.screen} onChange={(e) => setShow(s.id, "screen", e.target.value)}>
+                    <option value="">Select a theatre</option>
+                    {theatres.map((theatre) => <option key={theatre._id} value={theatre._id}>{theatre.name}{theatre.location ? ` - ${theatre.location}` : ""}</option>)}
+                  </select>
+                </Field>
                 <Field label="Language">
                   <select value={s.language} onChange={(e) => setShow(s.id, "language", e.target.value)}>
                     <option value="">Select</option>
@@ -324,7 +315,7 @@ export default function AdminMovies() {
           </section>
 
           <div className="ma-bar">
-            {!isNew && <button type="button" className="ma-btn link danger" onClick={remove}>Delete movie</button>}
+            {!isNew && <span className="ma-hint">Existing movies cannot be edited or deleted by this API.</span>}
             <span style={{ flex: 1 }} />
             <button type="button" className="ma-btn ghost" onClick={isNew ? startNew : () => openMovie(movies.find((m) => m.id === form.id) || form)}>Discard changes</button>
             <button className="ma-btn primary" disabled={saving}>{saving ? "Saving…" : isNew ? "Publish movie" : "Save changes"}</button>

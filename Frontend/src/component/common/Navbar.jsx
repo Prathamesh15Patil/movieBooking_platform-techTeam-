@@ -1,23 +1,30 @@
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/auth";
+
 const Navbar = () => {
+    const { user, loading, isAdmin } = useAuth();
+
     return (
         <nav className="flex items-center justify-between bg-slate-950 px-6 py-4 text-white">
-            <a href="/" className="text-xl font-bold">
+            <Link to="/" className="text-xl font-bold">
                 🎬 PopcornPass
-            </a>
+            </Link>
 
             <div className="flex items-center gap-6">
-                <a href="/" className="transition-colors hover:text-amber-400">
+                <Link to="/" className="transition-colors hover:text-amber-400">
                     Home
-                </a>
-                <a href="/movies" className="transition-colors hover:text-amber-400">
+                </Link>
+                <Link to="/movies" className="transition-colors hover:text-amber-400">
                     Movies
-                </a>
-                <a href="/booking" className="transition-colors hover:text-amber-400">
+                </Link>
+                <Link to="/booking" className="transition-colors hover:text-amber-400">
                     My Bookings
-                </a>
-                <a href="/profile" className="transition-colors hover:text-amber-400">
+                </Link>
+                <Link to="/profile" className="transition-colors hover:text-amber-400">
                     Profile
-                </a>
+                </Link>
+                {isAdmin && <Link to="/admin" className="transition-colors hover:text-amber-400">Admin</Link>}
+                {!loading && !user && <Link to="/login" className="transition-colors hover:text-amber-400">Sign in</Link>}
             </div>
         </nav>
     )
