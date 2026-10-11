@@ -7,13 +7,15 @@ import Payment from './pages/Payment'
 import Movies from './pages/Movies'
 import Booking from './pages/Booking'
 import Profile from './pages/Profile'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Navbar from './component/common/Navbar'
 
 function App() {
-
   return (
     <>
       <Navbar />
+
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -21,6 +23,9 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/booking" element={<Booking />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
