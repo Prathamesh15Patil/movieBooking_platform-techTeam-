@@ -1,0 +1,28 @@
+.profile-page-container {
+    min-height: calc(100vh - 120px);
+    background: #090d16;
+    color: #f1f5f9;
+    padding: 40px 20px 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-shell {
+    width: 100%;
+    max-width: 860px;
+}
+
+.profile-content-section {
+    animation: fadeInProfileContent 0.25s ease-out;
+}
+
+@keyframes fadeInProfileContent {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

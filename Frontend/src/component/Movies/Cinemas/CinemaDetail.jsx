@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ALL_SYSTEM_MOVIES } from "../../../utils/movieData";
 import { SHOWTIMES_BY_MOVIE } from "../../../utils/cinemaData";
+import { isShowtimePassed, isDateToday } from "../../../utils/timeUtils";
 import "./CinemaDetail.css";
 
 const DYNAMIC_FAST_FILLING = {
@@ -92,8 +93,12 @@ const CinemaDetail = ({ cinema, onBack }) => {
     };
 
     const filterShowtimesByTiming = (showtimes) => {
-        if (timingFilter === "all") return showtimes;
-        return showtimes.filter((st) => {
+        let list = showtimes;
+        if (isDateToday(selectedDate)) {
+            list = list.filter((st) => !isShowtimePassed(st.time, selectedDate));
+        }
+        if (timingFilter === "all") return list;
+        return list.filter((st) => {
             const hour = parseInt(st.time.split(":")[0]);
             const isPM = st.time.includes("PM");
             let militaryHour = hour;

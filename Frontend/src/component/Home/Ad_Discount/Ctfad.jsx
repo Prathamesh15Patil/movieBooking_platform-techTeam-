@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Ctfad.css";
 
 const promotions = [
@@ -42,10 +42,28 @@ const CtfAd = ({ showIntro = false }) => {
         }
     };
 
+    const navigate = useNavigate();
+
     // Trailer modal state
     const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true);
+
+    const handleBookTicket = (e) => {
+        if (e) e.preventDefault();
+        closeTrailerModal();
+        sessionStorage.setItem("fromMovieShowtimes", "true");
+        sessionStorage.setItem("lastMovieId", "doremon-castle-undersea");
+        sessionStorage.setItem("fromCtfTrailer", "true");
+        sessionStorage.removeItem("fromCinema");
+        navigate("/movie/doremon-castle-undersea/cinemas", {
+            state: {
+                fromCtf: true,
+                fromMovieShowtimes: true,
+                movieId: "doremon-castle-undersea",
+            },
+        });
+    };
 
     useEffect(() => {
         if (showIntro) return undefined;
@@ -371,9 +389,13 @@ const CtfAd = ({ showIntro = false }) => {
                                 </p>
 
                                 <div className="trailer-actions">
-                                    <Link to="/booking" className="trailer-book-btn" onClick={closeTrailerModal}>
+                                    <button
+                                        type="button"
+                                        className="trailer-book-btn"
+                                        onClick={handleBookTicket}
+                                    >
                                         Book a Ticket
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>

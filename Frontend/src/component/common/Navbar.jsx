@@ -1,17 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Searchbar from "./Searchbar";
 import CitySelector from "./CitySelector";
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
     const location = useLocation();
+    const { user, logout, openAuthModal } = useAuth();
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [activeHash, setActiveHash] = useState(() => location.hash || "");
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         setActiveHash(location.hash || "");
     }, [location.hash]);
+
+    // Close dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Close dropdown on route change
+    useEffect(() => {
+        setDropdownOpen(false);
+    }, [location.pathname]);
 
     const navItems = [
         { name: "Home", path: "/", targetId: "top" },
@@ -81,9 +101,83 @@ const Navbar = () => {
             <div className="navbar-right">
                 <CitySelector />
 
-                <Link to="/login" className="signin-button">
-                    Sign In
-                </Link>
+                {user ? (
+                    <div className="user-menu-container" ref={dropdownRef}>
+                        <button
+                            type="button"
+                            className="user-name-btn"
+                            onClick={() => setDropdownOpen((prev) => !prev)}
+                            aria-expanded={dropdownOpen}
+                        >
+                            <span className="user-avatar-circle">
+                                {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                            </span>
+                            <span className="user-name-label">{user.name}</span>
+                            <svg
+                                className={`user-chevron ${dropdownOpen ? "open" : ""}`}
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+
+                        {dropdownOpen && (
+                            <div className="user-dropdown-menu">
+                                <div className="dropdown-user-header">
+                                    <span className="dropdown-greet">Signed in as</span>
+                                    <strong className="dropdown-name">{user.name}</strong>
+                                    {user.email && (
+                                        <span className="dropdown-email">{user.email}</span>
+                                    )}
+                                </div>
+                                <div className="dropdown-divider" />
+                                <Link
+                                    to="/my-bookings"
+                                    className="dropdown-menu-item"
+                                    onClick={() => setDropdownOpen(false)}
+                                >
+
+                                    <span>My Bookings</span>
+                                </Link>
+                                <Link
+                                    to="/profile"
+                                    className="dropdown-menu-item"
+                                    onClick={() => setDropdownOpen(false)}
+                                >
+
+                                    <span>Profile</span>
+                                </Link>
+                                <div className="dropdown-divider" />
+                                <button
+                                    type="button"
+                                    className="dropdown-menu-item dropdown-logout-btn"
+                                    onClick={() => {
+                                        logout();
+                                        setDropdownOpen(false);
+                                    }}
+                                >
+
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        className="signin-button"
+                        onClick={openAuthModal}
+                    >
+                        Sign Up
+                    </button>
+                )}
             </div>
         </nav>
     );

@@ -230,8 +230,10 @@ export const SHOWTIMES_BY_MOVIE = {
         { time: "09:30 PM", sound: "ENG", status: "available", prices: { sofa: 300, platinum: 270, gold: 270, silver: 240 } },
     ],
     "doremon-castle-undersea": [
-        { time: "10:30 AM", sound: "KIDS SPECIAL", status: "available", prices: { sofa: 200, platinum: 180, gold: 180, silver: 160 } },
-        { time: "01:30 PM", sound: "KIDS SPECIAL", status: "available", prices: { sofa: 200, platinum: 180, gold: 180, silver: 160 } },
+        { time: "10:30 AM", sound: "2D", status: "available", prices: { sofa: 200, platinum: 180, gold: 180, silver: 160 } },
+        { time: "01:30 PM", sound: "2D", status: "available", prices: { sofa: 200, platinum: 180, gold: 180, silver: 160 } },
+        { time: "04:30 PM", sound: "3D", status: "fast", prices: { sofa: 240, platinum: 210, gold: 210, silver: 180 } },
+        { time: "07:15 PM", sound: "2D", status: "available", prices: { sofa: 220, platinum: 190, gold: 190, silver: 170 } },
     ],
 };
 

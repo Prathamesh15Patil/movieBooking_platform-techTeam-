@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PaymentCheckout, PaymentSuccess } from "../component/payment";
+import { useAuth } from "../context/AuthContext";
 import "./Payment.css";
 
 const Payment = () => {
     const navigate = useNavigate();
+    const { addBooking, user, openAuthModal } = useAuth();
     const [bookingSummary, setBookingSummary] = useState(null);
     const [paymentStatus, setPaymentStatus] = useState("checkout"); // "checkout" | "success"
 
@@ -34,7 +36,17 @@ const Payment = () => {
     }, []);
 
     const handlePay = () => {
-        // Transition to payment done status
+        // Check if user is logged in
+        if (!user) {
+            // Direct to login
+            openAuthModal();
+            return;
+        }
+
+        // If logged in, allow to pay
+        if (bookingSummary) {
+            addBooking(bookingSummary);
+        }
         setPaymentStatus("success");
     };
 
@@ -54,6 +66,7 @@ const Payment = () => {
             {paymentStatus === "checkout" ? (
                 <PaymentCheckout
                     bookingSummary={bookingSummary}
+                    user={user}
                     onPay={handlePay}
                     onCancel={handleCancel}
                 />

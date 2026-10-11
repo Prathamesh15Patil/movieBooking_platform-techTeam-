@@ -169,6 +169,31 @@
     cursor: pointer;
 }
 
+.checkout-user-status {
+    font-size: 0.78rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.checkout-user-status.logged-in {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #a7f3d0;
+}
+
+.checkout-user-status.logged-in strong {
+    color: #10b981;
+}
+
+.checkout-user-status.not-logged-in {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: #fcd34d;
+}
+
 /* Exactly 2 Buttons: Cancel & Pay */
 .minimal-actions-row {
     display: flex;

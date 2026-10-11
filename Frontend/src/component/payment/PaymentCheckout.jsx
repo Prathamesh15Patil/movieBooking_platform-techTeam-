@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./PaymentCheckout.css";
 
-const PaymentCheckout = ({ bookingSummary, onPay, onCancel }) => {
+const PaymentCheckout = ({ bookingSummary, user, onPay, onCancel }) => {
     const [agreedToTerms, setAgreedToTerms] = useState(true);
 
     const {
@@ -85,6 +85,15 @@ const PaymentCheckout = ({ bookingSummary, onPay, onCancel }) => {
                     />
                     <span>I agree to the Terms & Conditions</span>
                 </label>
+            </div>
+
+            {/* User Login State Hint */}
+            <div className={`checkout-user-status ${user ? "logged-in" : "not-logged-in"}`}>
+                {user ? (
+                    <span>✓ Paying as <strong>{user.name}</strong></span>
+                ) : (
+                    <span>Not logged in (clicking Pay will open Sign In)</span>
+                )}
             </div>
 
             {/* Exactly 2 Buttons: Cancel and Pay */}

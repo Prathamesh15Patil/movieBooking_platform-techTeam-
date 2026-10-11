@@ -14,6 +14,7 @@ import ThankYou from './pages/ThankYou'
 import Navbar from './component/common/Navbar'
 import Intro from "./component/common/Intro";
 import Footer from "./component/common/Footer";
+import AuthModal from "./component/common/AuthModal";
 
 import MovieShowtimes from './pages/MovieShowtimes'
 
@@ -61,6 +62,7 @@ function App() {
         />
       )}
       {!showIntro && <Navbar />}
+      <AuthModal />
       <div>
         <Routes>
           <Route path="/" element={<Home showIntro={showIntro} />} />
@@ -72,6 +74,7 @@ function App() {
           <Route path="/cinemas" element={<Cinemas />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/my-bookings" element={<Profile />} />
           <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
       </div>
@@ -81,4 +84,3 @@ function App() {
 }
 
 export default App
-

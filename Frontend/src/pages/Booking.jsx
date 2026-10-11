@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ALL_SYSTEM_MOVIES } from "../utils/movieData";
 import { getCinemaByName, getShowtimesForMovie } from "../utils/cinemaData";
+import { isShowtimePassed, isDateToday } from "../utils/timeUtils";
 import {
     BookingHeader,
     ShowtimeBar,
@@ -68,7 +69,18 @@ const Booking = () => {
                 sessionStorage.getItem("lastMovieId") ||
                 "drishyam-2";
 
-            navigate(`/movie/${movieId}/cinemas`);
+            const fromCtf = Boolean(
+                location.state?.fromCtf ||
+                bookingData?.fromCtf ||
+                sessionStorage.getItem("fromCtfTrailer") === "true"
+            );
+
+            navigate(`/movie/${movieId}/cinemas`, {
+                state: {
+                    fromCtf: fromCtf,
+                    fromMovieShowtimes: true,
+                },
+            });
             return;
         }
 
@@ -93,27 +105,41 @@ const Booking = () => {
         bookingData.availableShowtimes ||
         getShowtimesForMovie(bookingData.movieId);
 
+    const isToday = isDateToday(bookingData.date);
+
+    // Normalize showtimes into array of objects with time, sound, prices, and filter out past slots for today
+    const availableShowtimes = React.useMemo(() => {
+        let list = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
+        if (isToday) {
+            list = list.filter((st) => !isShowtimePassed(st.time, bookingData.date));
+        }
+        if (activeShowtime && !list.some((s) => s.time === activeShowtime)) {
+            if (!isToday || !isShowtimePassed(activeShowtime, bookingData.date)) {
+                list = [
+                    {
+                        time: activeShowtime,
+                        sound: bookingData.sound || "",
+                        prices: bookingData.prices,
+                    },
+                    ...list,
+                ];
+            }
+        }
+        return list;
+    }, [rawShowtimes, activeShowtime, bookingData.sound, bookingData.prices, isToday, bookingData.date]);
+
     const [activeShowtime, setActiveShowtime] = useState(() => {
-        return location.state?.showtime || bookingData.showtime || "10:30 AM";
+        const initial = location.state?.showtime || bookingData.showtime;
+        if (initial && (!isDateToday(bookingData.date) || !isShowtimePassed(initial, bookingData.date))) {
+            return initial;
+        }
+        // Fallback to first available upcoming slot
+        const normalized = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
+        const upcoming = normalized.find((st) => !isDateToday(bookingData.date) || !isShowtimePassed(st.time, bookingData.date));
+        return upcoming?.time || "04:25 PM";
     });
 
     const prices = bookingData.prices || { sofa: 250, platinum: 220, gold: 220, silver: 200 };
-
-    // Normalize showtimes into array of objects with time, sound, prices
-    const availableShowtimes = React.useMemo(() => {
-        let list = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
-        if (activeShowtime && !list.some((s) => s.time === activeShowtime)) {
-            list = [
-                {
-                    time: activeShowtime,
-                    sound: bookingData.sound || "",
-                    prices: bookingData.prices,
-                },
-                ...list,
-            ];
-        }
-        return list;
-    }, [rawShowtimes, activeShowtime, bookingData.sound, bookingData.prices]);
 
     const handleShowtimeChange = (newShowtime) => {
         setActiveShowtime(newShowtime);

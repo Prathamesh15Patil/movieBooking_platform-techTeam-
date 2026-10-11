@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { ALL_SYSTEM_MOVIES, MOVIE_DETAILS } from "../utils/movieData";
 import {
     getCinemasForMovie,
     getShowtimesForCinemaAndMovie,
 } from "../utils/cinemaData";
+import { isShowtimePassed, isDateToday } from "../utils/timeUtils";
 import "./MovieShowtimes.css";
 
 // 7-day calendar matching user screenshot
@@ -21,6 +22,20 @@ const DATES_LIST = [
 const MovieShowtimes = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const isFromCtf =
+        location.state?.fromCtf === true ||
+        sessionStorage.getItem("fromCtfTrailer") === "true";
+
+    const handleBack = () => {
+        if (isFromCtf) {
+            sessionStorage.removeItem("fromCtfTrailer");
+            navigate("/");
+            return;
+        }
+        navigate(`/movie/${movie.id}`);
+    };
 
     const [selectedDate, setSelectedDate] = useState(DATES_LIST[0]);
     const [priceFilter, setPriceFilter] = useState("all");
@@ -76,6 +91,11 @@ const MovieShowtimes = () => {
 
     const filterShowtimes = (showtimes) => {
         return showtimes.filter((st) => {
+            // Check if showtime has already passed for today
+            if (isDateToday(selectedDate) && isShowtimePassed(st.time, selectedDate)) {
+                return false;
+            }
+
             // Price filter
             if (priceFilter === "0-200") {
                 const minPrice = Math.min(st.prices?.silver || 200, st.prices?.gold || 220);
@@ -130,6 +150,7 @@ const MovieShowtimes = () => {
             state: {
                 fromMovieShowtimes: true,
                 fromCinema: false,
+                fromCtf: isFromCtf,
                 movieId: movie.id,
                 cinemaId: cinema.id,
                 cinema: cinema,
@@ -145,11 +166,16 @@ const MovieShowtimes = () => {
             <header className="showtimes-movie-header">
                 <div className="showtimes-header-inner">
                     <div className="showtimes-title-block">
-                        <Link to={`/movie/${movie.id}`} className="showtimes-back-link">
+                        <button
+                            type="button"
+                            className="showtimes-back-link"
+                            onClick={handleBack}
+                            aria-label="Back"
+                        >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M19 12H5M12 19l-7-7 7-7" />
                             </svg>
-                        </Link>
+                        </button>
                         <h1 className="showtimes-movie-title">
                             {movie.title} - ({movie.language})
                         </h1>
@@ -344,7 +370,11 @@ const MovieShowtimes = () => {
                                     {/* Right: Showtime Buttons Grid */}
                                     <div className="theater-showtimes-col">
                                         {visibleShowtimes.length === 0 ? (
-                                            <span className="no-showtimes-msg">No shows available for current filters</span>
+                                            <span className="no-showtimes-msg">
+                                                {isDateToday(selectedDate)
+                                                    ? "No upcoming shows remaining today"
+                                                    : "No shows available for current filters"}
+                                            </span>
                                         ) : (
                                             visibleShowtimes.map((st) => {
                                                 const isFast = st.status === "fast";
