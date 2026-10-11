@@ -3,7 +3,7 @@ import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import sendTicketEmail from "../utils/sendTicketEmail.js";
 import { calculatePrice } from "../utils/pricing.js";
-import redis, { seatLockKey } from "../db/redis.js";
+import redis, { requireRedis, seatLockKey } from "../db/redis.js";
 
 const showPopulate = {
   path: "show",
@@ -14,6 +14,7 @@ const showPopulate = {
 // This is the "Pay" button
 export const createBooking = async (req, res, next) => {
   try {
+    requireRedis();
     const { show: showId, seats } = req.body;
 
     const validSeats =

@@ -4,10 +4,14 @@ import User from '../models/User.js';
 export const protect = async (req, res, next) => {
   try {
     const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
+    const token = header?.startsWith("Bearer ")
+      ? header.split(" ")[1]
+      : req.cookies?.auth_token;
+
+    if (!token) {
       return res.status(401).json({ message: 'Not logged in' });
     }
-    const decoded = jwt.verify(header.split(' ')[1], process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.id).select('-password');
     if (!req.user) return res.status(401).json({ message: 'User not found' });
     next();
