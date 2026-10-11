@@ -107,6 +107,17 @@ const Booking = () => {
 
     const isToday = isDateToday(bookingData.date);
 
+    const [activeShowtime, setActiveShowtime] = useState(() => {
+        const initial = location.state?.showtime || bookingData.showtime;
+        if (initial && (!isDateToday(bookingData.date) || !isShowtimePassed(initial, bookingData.date))) {
+            return initial;
+        }
+        // Fallback to first available upcoming slot
+        const normalized = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
+        const upcoming = normalized.find((st) => !isDateToday(bookingData.date) || !isShowtimePassed(st.time, bookingData.date));
+        return upcoming?.time || initial || "06:45 PM";
+    });
+
     // Normalize showtimes into array of objects with time, sound, prices, and filter out past slots for today
     const availableShowtimes = React.useMemo(() => {
         let list = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
@@ -125,19 +136,12 @@ const Booking = () => {
                 ];
             }
         }
+        // Fallback safety: If all shows were in the past or list is empty, don't leave booking screen blank
+        if (list.length === 0) {
+            list = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
+        }
         return list;
     }, [rawShowtimes, activeShowtime, bookingData.sound, bookingData.prices, isToday, bookingData.date]);
-
-    const [activeShowtime, setActiveShowtime] = useState(() => {
-        const initial = location.state?.showtime || bookingData.showtime;
-        if (initial && (!isDateToday(bookingData.date) || !isShowtimePassed(initial, bookingData.date))) {
-            return initial;
-        }
-        // Fallback to first available upcoming slot
-        const normalized = (rawShowtimes || []).map((st) => (typeof st === "string" ? { time: st } : st));
-        const upcoming = normalized.find((st) => !isDateToday(bookingData.date) || !isShowtimePassed(st.time, bookingData.date));
-        return upcoming?.time || "04:25 PM";
-    });
 
     const prices = bookingData.prices || { sofa: 250, platinum: 220, gold: 220, silver: 200 };
 
@@ -177,13 +181,13 @@ const Booking = () => {
     ];
 
     const movieObj = ALL_SYSTEM_MOVIES.find((m) => m.id === bookingData.movieId) || {
-        image: "/pramad.jpg",
-        language: "Kannada",
+        image: bookingData.movieImage || "/pramad.jpg",
+        language: bookingData.movieLang || "Kannada",
         format: ["2D"],
     };
 
-    const movieImage = movieObj.image || "/pramad.jpg";
-    const movieLang = movieObj.language || "Kannada";
+    const movieImage = bookingData.movieImage || movieObj.image || "/pramad.jpg";
+    const movieLang = bookingData.movieLang || movieObj.language || "Kannada";
 
     const handleSeatClick = (seatId, rowObj) => {
         if (OCCUPIED_SEATS.has(seatId)) return;

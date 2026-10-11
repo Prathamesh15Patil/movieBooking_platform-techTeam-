@@ -261,6 +261,8 @@ export const CINEMA_MOVIE_SHOWTIMES = {
         "kapeel-nucleus": [
             { time: "12:45 PM", sound: "", status: "available", prices: { sofa: 250, platinum: 220, gold: 220, silver: 200 } },
             { time: "03:30 PM", sound: "", status: "available", prices: { sofa: 260, platinum: 230, gold: 230, silver: 210 } },
+            { time: "06:30 PM", sound: "", status: "available", prices: { sofa: 260, platinum: 230, gold: 230, silver: 210 } },
+            { time: "09:30 PM", sound: "", status: "available", prices: { sofa: 260, platinum: 230, gold: 230, silver: 210 } },
         ],
         "swaroop-nartaki": [
             { time: "03:15 PM", sound: "", status: "available", prices: { sofa: 240, platinum: 210, gold: 210, silver: 190 } },

@@ -127,6 +127,7 @@ const MovieShowtimes = () => {
         const bookingInfo = {
             movieTitle: movie.title,
             movieId: movie.id,
+            movieImage: movie.image,
             movieLang: movie.language,
             cinemaId: cinema.id,
             cinemaName: cinema.name,
@@ -148,14 +149,8 @@ const MovieShowtimes = () => {
 
         navigate("/booking", {
             state: {
-                fromMovieShowtimes: true,
-                fromCinema: false,
+                ...bookingInfo,
                 fromCtf: isFromCtf,
-                movieId: movie.id,
-                cinemaId: cinema.id,
-                cinema: cinema,
-                showtime: st.time,
-                availableShowtimes: allShowtimes,
             },
         });
     };

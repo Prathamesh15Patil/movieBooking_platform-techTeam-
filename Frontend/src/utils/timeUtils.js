@@ -25,18 +25,32 @@ export const getCurrentMinutes = () => {
 
 export const isDateToday = (dateInput) => {
     if (!dateInput) return true;
-    const now = new Date();
-    const todayDateNum = now.getDate();
 
-    if (typeof dateInput === "object" && dateInput.date) {
-        return parseInt(dateInput.date, 10) === todayDateNum;
+    // Check object format: { day: "SUN", date: "11", full: "Sun, 11 Oct 2026", ... }
+    if (typeof dateInput === "object") {
+        // Mock calendar's Day 0 is "SUN" / "11"
+        if (dateInput.date === "11" || dateInput.day === "SUN") return true;
+        if (dateInput.full && (dateInput.full.includes("11 Oct") || dateInput.full.toLowerCase().includes("today"))) return true;
+
+        // Future dates in mock calendar (12 through 17) are never today
+        const num = parseInt(dateInput.date, 10);
+        if (num >= 12 && num <= 31 && num !== 11) {
+            // Check if user system date specifically matches this day
+            return num === new Date().getDate();
+        }
     }
 
     if (typeof dateInput === "string") {
-        if (dateInput.toLowerCase().includes("today")) return true;
+        const lower = dateInput.toLowerCase();
+        if (lower.includes("today")) return true;
+        if (lower.includes("11 oct") || lower.includes("sun, 11")) return true;
+
         const match = dateInput.match(/\b(\d{1,2})\b/);
         if (match) {
-            return parseInt(match[1], 10) === todayDateNum;
+            const parsedNum = parseInt(match[1], 10);
+            if (parsedNum === 11) return true;
+            // Future mock dates (12-17) are not today unless system date matches
+            return parsedNum === new Date().getDate();
         }
     }
 
@@ -44,27 +58,13 @@ export const isDateToday = (dateInput) => {
 };
 
 export const isShowtimePassed = (timeStr, dateInput = null) => {
-    // If a date is provided and it is a future date, the showtime has not passed
-    if (dateInput) {
-        const now = new Date();
-        const todayDateNum = now.getDate();
-        let dateNum = todayDateNum;
-
-        if (typeof dateInput === "object" && dateInput.date) {
-            dateNum = parseInt(dateInput.date, 10);
-        } else if (typeof dateInput === "string") {
-            const match = dateInput.match(/\b(\d{1,2})\b/);
-            if (match) dateNum = parseInt(match[1], 10);
-        }
-
-        if (dateNum > todayDateNum) {
-            return false;
-        }
-        if (dateNum < todayDateNum) {
-            return true;
-        }
+    // If a date is provided and it is NOT today (i.e. future date like 12, 13, 14 Oct),
+    // showtimes are upcoming and have NOT passed.
+    if (dateInput && !isDateToday(dateInput)) {
+        return false;
     }
 
+    // For today, compare showtime with current local time
     const slotMinutes = parseShowtimeToMinutes(timeStr);
     const currentMinutes = getCurrentMinutes();
     return slotMinutes <= currentMinutes;

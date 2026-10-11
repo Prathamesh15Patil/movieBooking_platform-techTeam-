@@ -62,6 +62,8 @@ const CinemaDetail = ({ cinema, onBack }) => {
         const bookingInfo = {
             movieTitle: movie.title,
             movieId: movie.id,
+            movieImage: movie.image,
+            movieLang: movie.language,
             cinemaId: cinema.id,
             cinemaName: cinema.name,
             cinemaAddress: cinema.address,
@@ -82,12 +84,7 @@ const CinemaDetail = ({ cinema, onBack }) => {
 
         navigate("/booking", {
             state: {
-                fromCinema: true,
-                fromMovieShowtimes: false,
-                cinemaId: cinema.id,
-                cinema: cinema,
-                showtime: showtime.time,
-                availableShowtimes: movieShowtimes,
+                ...bookingInfo,
             },
         });
     };
@@ -116,7 +113,10 @@ const CinemaDetail = ({ cinema, onBack }) => {
     const filterShowtimesByPrice = (showtimes) => {
         if (priceRangeFilter === "all") return showtimes;
         return showtimes.filter((st) => {
-            const minPrice = Math.min(...Object.values(st.prices));
+            if (!st || !st.prices) return true;
+            const priceVals = Object.values(st.prices);
+            if (priceVals.length === 0) return true;
+            const minPrice = Math.min(...priceVals);
             if (priceRangeFilter === "under200") return minPrice <= 200;
             if (priceRangeFilter === "200to250") return minPrice >= 200 && minPrice <= 250;
             if (priceRangeFilter === "above250") return minPrice > 250;
