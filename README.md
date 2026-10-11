@@ -299,6 +299,8 @@ VITE_API_BASE_URL=http://localhost:3000/api
 
 If you use a different backend address, update this variable accordingly.
 
+For the Vercel deployment, the frontend uses the same-origin `/api` path in production and [Frontend/vercel.json](./Frontend/vercel.json) rewrites it to the deployed Render backend. If the frontend is deployed on another platform, set `VITE_API_BASE_URL` to that platform's backend API URL before building.
+
 ### 6. Install Frontend Dependencies
 
 Open a new terminal from the repository root:

@@ -1,5 +1,6 @@
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.PROD ? "/api" : "http://localhost:3000/api");
 
 export async function apiRequest(path, options = {}) {
   const isFormData = options.body instanceof FormData;
