@@ -7,10 +7,12 @@ import Payment from './pages/Payment'
 import Movies from './pages/Movies'
 import Booking from './pages/Booking'
 import Profile from './pages/Profile'
-import Login from './pages/Login'
+import Login from './pages/login'
 import Signup from './pages/Signup'
 import Navbar from './component/common/Navbar'
 import Admin from './pages/Admin'
+import ProtectedRoute from "./components/ProtectedRoute"
+import GuestRoute from "./components/GuestRoute"
 
 function App() {
   return (
@@ -23,12 +25,13 @@ function App() {
           <Route path="/movie/:id" element={<MovieDetail />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/movies" element={<Movies />} />
-          <Route path="/booking" element={<Booking />} />
+          <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+          <Route path="/booking/:showId" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute adminOnly><Admin /></ProtectedRoute>} />
         </Routes>
       </div>
     </>

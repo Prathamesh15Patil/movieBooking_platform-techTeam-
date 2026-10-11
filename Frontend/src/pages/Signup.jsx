@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { Scene, Brand, Clapper, cardStyle, grad, field } from "./PopcornScene";
-
-const AUTH_KEY = "popcornpass_user"; // same key as Profile.jsx
-const go = (path) => window.location.assign(path); // swap for useNavigate() if you use React Router
+import { Scene, Brand, Clapper } from "./PopcornScene";
+import { cardStyle, field } from "./authTheme";
+import { useAuth } from "../context/auth";
 
 const fields = [
   { k: "name", label: "Full Name", ph: "Enter your full name", type: "text", ac: "name" },
@@ -23,16 +23,27 @@ export default function Signup() {
   const [v, setV] = useState({ name: "", email: "", pw: "", cf: "" });
   const [show, setShow] = useState({});
   const [err, setErr] = useState({});
+  const [pending, setPending] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     const next = {};
     for (const k in rules) { const m = rules[k](v); if (m) next[k] = m; }
     setErr(next);
     if (Object.keys(next).length) return;
-    // Temporary frontend-only auth
-    localStorage.setItem(AUTH_KEY, JSON.stringify({ name: v.name.trim(), avatar: "" }));
-    go("/profile");
+    setPending(true);
+    setServerError("");
+    try {
+      await register(v.name.trim(), v.email.trim(), v.pw);
+      navigate("/profile", { replace: true });
+    } catch (error) {
+      setServerError(error.message);
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
@@ -74,12 +85,13 @@ export default function Signup() {
               {err[k] && <p className="mt-1.5 text-xs text-red-300">{err[k]}</p>}
             </div>
           ))}
+          {serverError && <p role="alert" className="text-sm text-red-300">{serverError}</p>}
 
           <button
             type="submit"
             className="h-12 w-full rounded-xl bg-[#7c4dff] text-sm font-semibold text-white shadow-lg shadow-[#7c4dff]/30 transition hover:-translate-y-px hover:bg-[#6b38ff] active:translate-y-0 active:scale-[.98]"
           >
-            Create Account
+            {pending ? "Creating account..." : "Create Account"}
           </button>
 
           <p className="text-center text-sm text-white/55">

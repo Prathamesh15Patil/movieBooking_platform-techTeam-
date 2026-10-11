@@ -1,23 +1,42 @@
 import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { Scene, Brand, Clapper, cardStyle, grad, field } from "./PopcornScene";
+import { Scene, Brand, Clapper } from "./PopcornScene";
+import { cardStyle, field } from "./authTheme";
+import { useAuth } from "../context/auth";
 
 export default function LoginPage() {
   const [v, setV] = useState({ id: "", pw: "" });
   const [show, setShow] = useState(false);
   const [err, setErr] = useState({});
+  const [pending, setPending] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setErr({
+    const validation = {
       ...(!v.id.trim() && { id: "Enter your email or username." }),
       ...(!v.pw && { pw: "Enter your password." }),
-    });
-    // TODO: authenticate
+    };
+    setErr(validation);
+    if (Object.keys(validation).length) return;
+
+    setPending(true);
+    try {
+      const user = await login(v.id.trim(), v.pw);
+      const destination = location.state?.from?.pathname || (user.role === "admin" ? "/admin" : "/");
+      navigate(destination, { replace: true });
+    } catch (error) {
+      setErr({ form: error.message });
+    } finally {
+      setPending(false);
+    }
   };
 
   const fields = [
-    { k: "id", label: "Email or Username", type: "text", ph: "Enter your email or username", ac: "username" },
+    { k: "id", label: "Email", type: "email", ph: "Enter your email", ac: "email" },
     { k: "pw", label: "Password", type: show ? "text" : "password", ph: "Enter your password", ac: "current-password" },
   ];
 
@@ -60,12 +79,13 @@ export default function LoginPage() {
               {err[k] && <p className="mt-1.5 text-xs text-red-300">{err[k]}</p>}
             </div>
           ))}
+          {err.form && <p role="alert" className="text-sm text-red-300">{err.form}</p>}
 
           <button
             type="submit"
             className="h-12 w-full rounded-xl bg-[#7c4dff] text-sm font-semibold text-white shadow-lg shadow-[#7c4dff]/30 transition hover:-translate-y-px hover:bg-[#6b38ff] active:translate-y-0 active:scale-[.98]"
           >
-            Sign In
+            {pending ? "Signing in..." : "Sign In"}
           </button>
 
           <div className="flex items-center gap-3 text-xs text-white/35">
@@ -88,9 +108,9 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-white/55">
             Don't have an account?{" "}
-            <a href="/signup" className="font-semibold text-[#8ff5c8] underline-offset-4 transition hover:text-[#c4a4ff] hover:underline">
+            <Link to="/signup" className="font-semibold text-[#8ff5c8] underline-offset-4 transition hover:text-[#c4a4ff] hover:underline">
               Create one
-            </a>
+            </Link>
           </p>
           <Clapper />
         </form>
