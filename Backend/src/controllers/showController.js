@@ -1,7 +1,7 @@
 import Show from "../models/Show.js";
 import Theatre from "../models/Theatre.js";
 import { calculatePrice } from "../utils/pricing.js";
-import redis, { HOLD_SECONDS, seatLockKey } from "../db/redis.js";
+import redis, { HOLD_SECONDS, requireRedis, seatLockKey } from "../db/redis.js";
 
 // GET /api/movies/:movieId/shows
 export const getShowsForMovie = async (req, res, next) => {
@@ -63,6 +63,7 @@ export const createShow = async (req, res, next) => {
 // GET /api/shows/:showId/seats
 export const getSeats = async (req, res, next) => {
   try {
+    requireRedis();
     const show = await Show.findById(req.params.showId).select("seats");
     if (!show) return res.status(404).json({ message: "Show not found" });
 
@@ -99,6 +100,7 @@ export const getPrice = async (req, res, next) => {
 // POST /api/shows/:showId/seats/lock   body: { seats: ["A1", "A2"] }
 export const lockSeats = async (req, res, next) => {
   try {
+    requireRedis();
     const { showId } = req.params;
     const { seats } = req.body;
 

@@ -9,7 +9,14 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL 
 
 connectDb(MONGO_URL)
-  .then(() => redis.connect())
+  .then(async () => {
+    try {
+      await redis.connect();
+      console.log("Redis connected");
+    } catch (err) {
+      console.error("Redis unavailable; starting without seat-locking support:", err.message);
+    }
+  })
   .then(() => {
     console.log("MongoDB connected");
     
@@ -18,6 +25,6 @@ connectDb(MONGO_URL)
     });
   })
   .catch((err) => {
-    console.log("MongoDB connection error:", err);
+    console.error("Backend startup error:", err);
     process.exitCode = 1;
   });
