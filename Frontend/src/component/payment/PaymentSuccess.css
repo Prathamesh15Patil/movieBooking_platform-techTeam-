@@ -1,0 +1,181 @@
+.minimal-success-card {
+    background: linear-gradient(145deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.98));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 16px;
+    padding: 24px 28px;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(16, 185, 129, 0.15);
+    text-align: center;
+    color: #f3f4f6;
+    animation: scaleInMinimal 0.35s ease-out;
+}
+
+@keyframes scaleInMinimal {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.minimal-success-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.minimal-success-icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+}
+
+.checkmark-svg {
+    width: 48px;
+    height: 48px;
+    stroke-width: 3.5;
+    stroke: #10b981;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 3.5;
+    stroke: #10b981;
+    animation: strokeCircle 0.5s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes strokeCircle {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes strokeCheck {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.minimal-success-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #10b981;
+    margin: 0 0 2px 0;
+    letter-spacing: -0.01em;
+}
+
+.minimal-success-subtitle {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin: 0 0 12px 0;
+}
+
+.minimal-ref-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #f59e0b;
+    margin-bottom: 14px;
+    font-family: monospace;
+}
+
+/* Compact Receipt Box */
+.minimal-receipt-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.minimal-receipt-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+}
+
+.line-label {
+    color: #9ca3af;
+}
+
+.line-val {
+    color: #e5e7eb;
+    font-weight: 600;
+}
+
+.line-val.highlight-seat {
+    color: #60a5fa;
+}
+
+.minimal-receipt-line.total-line {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
+    margin-top: 2px;
+}
+
+.amount-paid {
+    color: #10b981;
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+.minimal-success-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.minimal-countdown-text {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin: 0;
+}
+
+.minimal-countdown-text strong {
+    color: #10b981;
+}
+
+.minimal-btn-home {
+    width: 100%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s ease;
+}
+
+.minimal-btn-home:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+}

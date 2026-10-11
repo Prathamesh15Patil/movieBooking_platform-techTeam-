@@ -14,8 +14,8 @@
 
 .pp-footer-main {
     display: grid;
-    grid-template-columns: 1.4fr 0.8fr 1fr 1.4fr;
-    gap: 45px;
+    grid-template-columns: 1.2fr 2fr 1fr;
+    gap: 50px;
     max-width: 1440px;
     margin: 0 auto;
 }
@@ -36,8 +36,6 @@
     place-items: center;
     width: 36px;
     height: 36px;
-
-
     color: #fff;
     font-size: 24px;
 }
@@ -47,7 +45,7 @@
 }
 
 .pp-footer-description {
-    max-width: 310px;
+    max-width: 340px;
     margin: 18px 0;
     color: #a1a1aa;
     font-size: 14px;
@@ -84,15 +82,13 @@
     color: #fff;
 }
 
-.pp-footer-column,
-.pp-footer-newsletter {
+.pp-footer-column {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.pp-footer-column h3,
-.pp-footer-newsletter h3 {
+.pp-footer-column h3 {
     margin: 5px 0 20px;
     color: #fff;
     font-size: 16px;
@@ -104,69 +100,20 @@
     color: #a1a1aa;
     font-size: 14px;
     text-decoration: none;
-    transition: color 180ms ease;
+    transition: color 180ms ease, transform 180ms ease;
 }
 
 .pp-footer-column a:hover {
     color: #f43f5e;
+    transform: translateX(3px);
 }
 
-.pp-footer-newsletter p {
-    margin: -5px 0 18px;
+.pp-project-desc {
     color: #a1a1aa;
     font-size: 14px;
-    line-height: 1.7;
-}
-
-.pp-footer-form {
-    display: flex;
-    width: 100%;
-    min-height: 46px;
-    overflow: hidden;
-    border: 1px solid #30303b;
-    border-radius: 8px;
-    background: #111118;
-    box-sizing: border-box;
-}
-
-.pp-footer-form:focus-within {
-    border-color: #f43f5e;
-}
-
-.pp-footer-form input {
-    width: 100%;
-    min-width: 0;
-    padding: 0 13px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #fff;
-    font: inherit;
-    font-size: 13px;
-}
-
-.pp-footer-form input::placeholder {
-    color: #71717a;
-}
-
-.pp-footer-form button {
-    flex: 0 0 45px;
-    border: none;
-    background: #f43f5e;
-    color: #fff;
-    cursor: pointer;
-    font-size: 24px;
-    transition: background 180ms ease;
-}
-
-.pp-footer-form button:hover {
-    background: #e11d48;
-}
-
-.pp-footer-note {
-    margin-top: 12px;
-    color: #71717a;
-    font-size: 12px;
+    line-height: 1.8;
+    margin: -5px 0 0 0;
+    max-width: 580px;
 }
 
 .pp-footer-divider {
@@ -196,10 +143,14 @@
 }
 
 /* Tablet */
-@media (max-width: 1000px) {
+@media (max-width: 960px) {
     .pp-footer-main {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 38px;
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+    }
+
+    .pp-footer-project-info {
+        grid-column: 1 / -1;
     }
 }
 
@@ -211,13 +162,8 @@
     }
 
     .pp-footer-main {
-        grid-template-columns: 1fr 1fr;
-        gap: 32px 20px;
-    }
-
-    .pp-footer-brand,
-    .pp-footer-newsletter {
-        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 
     .pp-footer-description {
@@ -236,10 +182,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     .pp-footer-socials a,
-    .pp-footer-column a,
-    .pp-footer-form button {
+    .pp-footer-column a {
         transition: none;
     }
 }

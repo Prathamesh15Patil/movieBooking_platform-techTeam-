@@ -71,13 +71,18 @@ const CinemaDetail = ({ cinema, onBack }) => {
             prices: showtime.prices,
             availableShowtimes: movieShowtimes,
             fromCinema: true,
+            fromMovieShowtimes: false,
         };
         sessionStorage.setItem("bookingState", JSON.stringify(bookingInfo));
         sessionStorage.setItem("fromCinema", "true");
         sessionStorage.setItem("lastCinemaId", cinema.id);
+        sessionStorage.removeItem("fromMovieShowtimes");
+        sessionStorage.removeItem("lastMovieId");
+
         navigate("/booking", {
             state: {
                 fromCinema: true,
+                fromMovieShowtimes: false,
                 cinemaId: cinema.id,
                 cinema: cinema,
                 showtime: showtime.time,

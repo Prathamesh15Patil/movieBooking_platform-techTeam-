@@ -15,6 +15,8 @@ import Navbar from './component/common/Navbar'
 import Intro from "./component/common/Intro";
 import Footer from "./component/common/Footer";
 
+import MovieShowtimes from './pages/MovieShowtimes'
+
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
@@ -63,6 +65,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home showIntro={showIntro} />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/movie/:id/cinemas" element={<MovieShowtimes />} />
+          <Route path="/buytickets/:id" element={<MovieShowtimes />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/cinemas" element={<Cinemas />} />

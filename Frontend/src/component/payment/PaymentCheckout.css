@@ -1,0 +1,216 @@
+.minimal-checkout-card {
+    background: linear-gradient(145deg, rgba(26, 29, 36, 0.96), rgba(18, 20, 26, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px 28px;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(229, 9, 20, 0.08);
+    color: #f3f4f6;
+    animation: fadeInMinimal 0.3s ease-out;
+}
+
+@keyframes fadeInMinimal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.minimal-checkout-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.minimal-checkout-header h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+}
+
+.minimal-checkout-subtitle {
+    font-size: 0.82rem;
+    color: #9ca3af;
+}
+
+/* Compact Summary Card */
+.minimal-summary-card {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.minimal-summary-row.primary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.minimal-movie-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.minimal-movie-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.minimal-movie-lang {
+    font-size: 0.76rem;
+    color: #e50914;
+    font-weight: 600;
+}
+
+.minimal-total-box {
+    text-align: right;
+}
+
+.minimal-amount-label {
+    display: block;
+    font-size: 0.72rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.minimal-amount-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.minimal-summary-row.details {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.8rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.detail-label {
+    color: #9ca3af;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    color: #e5e7eb;
+    font-weight: 600;
+}
+
+.detail-value.highlight-seats {
+    color: #60a5fa;
+}
+
+/* Minimal Terms Card */
+.minimal-terms-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+}
+
+.minimal-terms-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #f59e0b;
+    margin-bottom: 6px;
+}
+
+.minimal-terms-text {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: #9ca3af;
+    margin: 0 0 10px 0;
+}
+
+.minimal-terms-agree {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #d1d5db;
+    cursor: pointer;
+    user-select: none;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.minimal-terms-agree input {
+    width: 15px;
+    height: 15px;
+    accent-color: #e50914;
+    cursor: pointer;
+}
+
+/* Exactly 2 Buttons: Cancel & Pay */
+.minimal-actions-row {
+    display: flex;
+    gap: 12px;
+}
+
+.minimal-btn-cancel,
+.minimal-btn-pay {
+    flex: 1;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.minimal-btn-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e5e7eb;
+}
+
+.minimal-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.minimal-btn-pay {
+    background: linear-gradient(135deg, #e50914 0%, #b80710 100%);
+    border: 1px solid rgba(229, 9, 20, 0.4);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.35);
+}
+
+.minimal-btn-pay:hover:not(:disabled) {
+    background: linear-gradient(135deg, #f40b17 0%, #c80812 100%);
+    transform: translateY(-1px);
+}
+
+.minimal-btn-pay:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}

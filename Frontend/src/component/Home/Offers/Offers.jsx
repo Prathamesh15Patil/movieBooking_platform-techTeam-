@@ -13,7 +13,7 @@ const offers = [
         button: "Explore Movies",
     },
     {
-        image: "/Navratrioffer.png",
+        image: "/ticket1.png",
         alt: "Navratri Special Offer",
         eyebrow: "YOUR NEXT BIG-SCREEN MOMENT",
         title: "Get 20% OFF on your next favorite movie.",

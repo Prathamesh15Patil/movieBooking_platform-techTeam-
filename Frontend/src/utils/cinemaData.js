@@ -22,7 +22,7 @@ export const CINEMAS_DATABASE = {
             address:
                 "Shastri Nagar, Goodshed Road, Shahapur, Belagavi (Belgaum), Karnataka 590001, India",
             screens: 2,
-            movieIds: ["premada-oorali", "bail"],
+            movieIds: ["premada-oorali", "bail", "drishyam-2"],
         },
         {
             id: "chitra-talkies",
@@ -248,3 +248,41 @@ export const getShowtimesForMovie = (movieId) => {
     );
 };
 
+export const CINEMA_MOVIE_SHOWTIMES = {
+    // Drishyam: The Conclusion
+    "drishyam-2": {
+        "inox-camp": [
+            { time: "04:25 PM", sound: "DOLBY 7.1", status: "fast", prices: { sofa: 280, platinum: 250, gold: 250, silver: 220 } },
+            { time: "07:10 PM", sound: "DOLBY 7.1", status: "available", prices: { sofa: 280, platinum: 250, gold: 250, silver: 220 } },
+            { time: "10:30 PM", sound: "DOLBY 7.1", status: "available", prices: { sofa: 280, platinum: 250, gold: 250, silver: 220 } },
+        ],
+        "kapeel-nucleus": [
+            { time: "12:45 PM", sound: "", status: "available", prices: { sofa: 250, platinum: 220, gold: 220, silver: 200 } },
+            { time: "03:30 PM", sound: "", status: "available", prices: { sofa: 260, platinum: 230, gold: 230, silver: 210 } },
+        ],
+        "swaroop-nartaki": [
+            { time: "03:15 PM", sound: "", status: "available", prices: { sofa: 240, platinum: 210, gold: 210, silver: 190 } },
+            { time: "06:15 PM", sound: "", status: "available", prices: { sofa: 250, platinum: 220, gold: 220, silver: 200 } },
+            { time: "09:30 PM", sound: "", status: "available", prices: { sofa: 260, platinum: 230, gold: 230, silver: 210 } },
+        ],
+        "pvr-globus": [
+            { time: "10:30 AM", sound: "4K LASER", status: "available", prices: { sofa: 290, platinum: 260, gold: 260, silver: 230 } },
+            { time: "01:45 PM", sound: "4K LASER", status: "available", prices: { sofa: 290, platinum: 260, gold: 260, silver: 230 } },
+            { time: "05:15 PM", sound: "DOLBY ATMOS", status: "fast", prices: { sofa: 320, platinum: 280, gold: 280, silver: 250 } },
+            { time: "08:30 PM", sound: "DOLBY ATMOS", status: "available", prices: { sofa: 320, platinum: 280, gold: 280, silver: 250 } },
+        ],
+    },
+};
+
+export const getShowtimesForCinemaAndMovie = (cinemaId, movieId) => {
+    if (CINEMA_MOVIE_SHOWTIMES[movieId] && CINEMA_MOVIE_SHOWTIMES[movieId][cinemaId]) {
+        return CINEMA_MOVIE_SHOWTIMES[movieId][cinemaId];
+    }
+    return getShowtimesForMovie(movieId);
+};
+
+export const getCinemasForMovie = (movieId, city = "Belagavi (Belgaum)") => {
+    const list = CINEMAS_DATABASE[city] || CINEMAS_DATABASE["Belagavi (Belgaum)"] || [];
+    const matched = list.filter((c) => !c.movieIds || c.movieIds.includes(movieId));
+    return matched.length > 0 ? matched : list;
+};

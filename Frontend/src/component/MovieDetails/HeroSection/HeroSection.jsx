@@ -96,6 +96,18 @@ const HeroSection = ({ movie }) => {
             <div className="movie-hero-overlay" />
 
             <div className="movie-hero-content">
+                <button
+                    type="button"
+                    className="movie-hero-back-btn"
+                    onClick={() => navigate("/movies")}
+                    title="Back to movies"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    <span>Back to Movies</span>
+                </button>
+
                 <span className="movie-hero-label">
                     {language || "Movie"}
                 </span>
@@ -124,29 +136,9 @@ const HeroSection = ({ movie }) => {
                     <button
                         className="movie-book-button"
                         onClick={() => {
-                            sessionStorage.setItem("fromCinema", "false");
-                            sessionStorage.removeItem("lastCinemaId");
-                            const existing = sessionStorage.getItem("bookingState");
-                            let prev = {};
-                            try {
-                                if (existing) prev = JSON.parse(existing);
-                            } catch (e) {}
-                            sessionStorage.setItem(
-                                "bookingState",
-                                JSON.stringify({
-                                    ...prev,
-                                    movieTitle: movie.title,
-                                    movieId: movie.id,
-                                    fromCinema: false,
-                                })
-                            );
-                            navigate("/booking", {
-                                state: {
-                                    fromCinema: false,
-                                    fromMovie: true,
-                                    movieId: movie.id,
-                                },
-                            });
+                            sessionStorage.setItem("fromMovieShowtimes", "true");
+                            sessionStorage.setItem("lastMovieId", movie.id);
+                            navigate(`/movie/${movie.id}/cinemas`);
                         }}
                     >
                         Book Tickets

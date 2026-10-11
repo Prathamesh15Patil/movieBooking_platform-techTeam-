@@ -19,34 +19,59 @@ const Booking = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Load initial booking information from sessionStorage
+    // Load initial booking information from sessionStorage & location.state
     const [bookingData, setBookingData] = useState(() => {
+        let base = {
+            movieTitle: "Drishyam: The Conclusion",
+            movieId: "drishyam-2",
+            cinemaName: "INOX: Camp Road, Belagavi",
+            cinemaAddress: "Head Post Office Road, Belagavi",
+            date: "Sun, 11 Oct 2026",
+            showtime: "04:25 PM",
+            sound: "DOLBY 7.1",
+            prices: { sofa: 280, platinum: 250, gold: 250, silver: 220 },
+        };
+
         const saved = sessionStorage.getItem("bookingState");
         if (saved) {
             try {
-                return JSON.parse(saved);
+                base = { ...base, ...JSON.parse(saved) };
             } catch (e) {
                 console.error("Failed to parse bookingState", e);
             }
         }
-        return {
-            movieTitle: "Premada Oorali",
-            movieId: "premada-oorali",
-            cinemaName: "INOX: Camp Road, Belagavi",
-            cinemaAddress: "Head Post Office Road, Belagavi",
-            date: "Sun, 11 Oct 2026",
-            showtime: "10:30 AM",
-            sound: "DOLBY 950",
-            prices: { sofa: 250, platinum: 220, gold: 220, silver: 200 },
-        };
+
+        if (location.state) {
+            base = { ...base, ...location.state };
+        }
+
+        return base;
     });
 
     const isFromCinema =
         location.state?.fromCinema === true ||
-        bookingData?.fromCinema === true ||
-        sessionStorage.getItem("fromCinema") === "true";
+        (location.state?.fromMovieShowtimes !== true &&
+            (bookingData?.fromCinema === true || sessionStorage.getItem("fromCinema") === "true") &&
+            sessionStorage.getItem("fromMovieShowtimes") !== "true");
+
+    const isFromMovieShowtimes =
+        location.state?.fromMovieShowtimes === true ||
+        (location.state?.fromCinema !== true &&
+            (bookingData?.fromMovieShowtimes === true || sessionStorage.getItem("fromMovieShowtimes") === "true") &&
+            sessionStorage.getItem("fromCinema") !== "true");
 
     const handleBack = () => {
+        if (isFromMovieShowtimes) {
+            const movieId =
+                location.state?.movieId ||
+                bookingData?.movieId ||
+                sessionStorage.getItem("lastMovieId") ||
+                "drishyam-2";
+
+            navigate(`/movie/${movieId}/cinemas`);
+            return;
+        }
+
         if (isFromCinema) {
             const cinemaId =
                 location.state?.cinemaId ||
@@ -199,7 +224,7 @@ const Booking = () => {
         <div className="booking-page-container">
             {/* Top Navigation Header */}
             <BookingHeader
-                isFromCinema={isFromCinema}
+                isFromCinema={isFromCinema || isFromMovieShowtimes}
                 onBack={handleBack}
                 movieTitle={bookingData.movieTitle}
                 movieLang={movieLang}
@@ -238,7 +263,7 @@ const Booking = () => {
             {/* "How Many Seats?" Modal with Movie Poster */}
             <SeatModal
                 isOpen={showSeatModal}
-                isFromCinema={isFromCinema}
+                isFromCinema={isFromCinema || isFromMovieShowtimes}
                 onBack={handleBack}
                 movieTitle={bookingData.movieTitle}
                 cinemaName={bookingData.cinemaName}
