@@ -7,7 +7,7 @@ export const getMovies = async (req, res, next) => {
 
     if (status) filter.status = status;
     if (search) filter.$text = { $search: search }; // uses your text index on title
-
+    
     const movies = await Movie.find(filter).sort({ releaseDate: -1 });
     res.json(movies);
   } catch (err) {

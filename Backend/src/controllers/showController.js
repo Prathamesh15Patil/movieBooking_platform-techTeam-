@@ -1,5 +1,7 @@
 import Show from "../models/Show.js";
 import Theatre from "../models/Theatre.js";
+import { calculatePrice } from "../utils/pricing.js";
+// [REDIS] import redis, { HOLD_SECONDS, seatLockKey } from "../db/redis.js";
 
 // GET /api/movies/:movieId/shows
 export const getShowsForMovie = async (req, res, next) => {
@@ -64,8 +66,71 @@ export const getSeats = async (req, res, next) => {
     const show = await Show.findById(req.params.showId).select("seats");
     if (!show) return res.status(404).json({ message: "Show not found" });
 
-    res.json(show.seats.map(({ seatId, status }) => ({ seatId, status })));
+    // [REDIS] uncomment this line, and swap the status line below as it says
+    // const locks = await redis.mGet(show.seats.map((s) => seatLockKey(show._id, s.seatId)));
+
+    res.json(
+      show.seats.map((s, i) => ({
+        seatId: s.seatId,
+        status: s.status, // [REDIS] replace with: s.status === "AVAILABLE" && locks[i] ? "LOCKED" : s.status,
+      }))
+    );
   } catch (err) {
     next(err);
   }
 };
+
+// GET /api/shows/:showId/price?seats=2
+export const getPrice = async (req, res, next) => {
+  try {
+    const count = parseInt(req.query.seats, 10);
+    if (!count || count < 1) {
+      return res.status(400).json({ message: "seats must be a positive number" });
+    }
+
+    const show = await Show.findById(req.params.showId).select("ticketPrice");
+    if (!show) return res.status(404).json({ message: "Show not found" });
+
+    res.json(calculatePrice(show.ticketPrice, count));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* [REDIS] to enable: delete this opening line and the "end REDIS" line below
+// POST /api/shows/:showId/seats/lock   body: { seats: ["A1", "A2"] }
+export const lockSeats = async (req, res, next) => {
+  try {
+    const { showId } = req.params;
+    const { seats } = req.body;
+
+    if (!Array.isArray(seats) || seats.length === 0 || new Set(seats).size !== seats.length) {
+      return res.status(400).json({ message: "Invalid seats" });
+    }
+
+    const show = await Show.findById(showId).select("seats");
+    if (!show) return res.status(404).json({ message: "Show not found" });
+
+    const status = new Map(show.seats.map((s) => [s.seatId, s.status]));
+    if (!seats.every((s) => status.get(s) === "AVAILABLE")) {
+      return res.status(409).json({ message: "One or more seats unavailable" });
+    }
+
+    const userId = req.user._id.toString();
+    const taken = [];
+    for (const seatId of seats) {
+      const key = seatLockKey(showId, seatId);
+      const ok = await redis.set(key, userId, { NX: true, EX: HOLD_SECONDS });
+      if (!ok && (await redis.get(key)) !== userId) {
+        if (taken.length) await redis.del(taken); // undo the ones we got
+        return res.status(409).json({ message: "Someone else is holding one of those seats" });
+      }
+      taken.push(key);
+    }
+
+    res.json({ message: "Seats held", seats, expiresInSeconds: HOLD_SECONDS });
+  } catch (err) {
+    next(err);
+  }
+};
+// end REDIS */
