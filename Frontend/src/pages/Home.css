@@ -1,0 +1,15 @@
+.home-page {
+    min-height: 100vh;
+    padding: 5px clamp(16px, 3vw, 48px) 48px;
+    background: #f8fafc;
+}
+
+.home-content {
+    width: min(1440px, 100%);
+    margin: 38px auto 0;
+}
+
+.home-content h2 {
+    color: #0f172a;
+    font-size: 28px;
+}
