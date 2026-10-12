@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Scene, Brand, Clapper } from "./PopcornScene";
 import { cardStyle, field } from "./authTheme";
@@ -12,7 +12,6 @@ export default function LoginPage() {
   const [pending, setPending] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -25,9 +24,8 @@ export default function LoginPage() {
 
     setPending(true);
     try {
-      const user = await login(v.id.trim(), v.pw);
-      const destination = location.state?.from?.pathname || (user.role === "admin" ? "/admin" : "/");
-      navigate(destination, { replace: true });
+      await login(v.id.trim(), v.pw);
+      navigate("/", { replace: true });
     } catch (error) {
       setErr({ form: error.message });
     } finally {

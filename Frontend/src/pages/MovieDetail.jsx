@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../services/api";
+import MovieBackdrop from "../components/MovieBackdrop";
 
 export default function MovieDetail() {
   const { id } = useParams();
@@ -15,8 +16,9 @@ export default function MovieDetail() {
   if (error) return <main className="p-10 text-red-300">{error}</main>;
   if (!movie) return <main className="p-10 text-white">Loading movie...</main>;
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-12 text-white">
-      <div className="mx-auto max-w-5xl">
+    <main className="relative isolate min-h-screen overflow-hidden bg-slate-950 px-6 py-12 text-white">
+      <MovieBackdrop movies={[movie]} />
+      <div className="relative z-10 mx-auto max-w-5xl">
         <Link to="/movies" className="text-violet-300">
           ← All movies
         </Link>

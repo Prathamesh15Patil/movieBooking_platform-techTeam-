@@ -38,7 +38,7 @@ export default function Signup() {
     setServerError("");
     try {
       await register(v.name.trim(), v.email.trim(), v.pw);
-      navigate("/profile", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       setServerError(error.message);
     } finally {
