@@ -1,5 +1,7 @@
 # 🎬 Movie Booking Platform
 
+[![Live Demo](https://img.shields.io/badge/Vercel-Live%20Demo-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://popcornpass-phi.vercel.app/)
+
 A full-stack movie discovery and ticket booking application built with React, Node.js, Express, MongoDB, and Redis. Users can browse movies, explore showtimes, select seats, temporarily reserve them, and confirm bookings through a simulated payment flow. Administrators can manage movies and create shows for configured theatres.
 
 ## ✨ Features
